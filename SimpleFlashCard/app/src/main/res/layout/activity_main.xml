@@ -11,22 +11,7 @@
         android:id="@+id/tablayout_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="#F57C00">
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabItem_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/ic_view_list_48px"
-            android:text="Deck" />
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tabItem_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/ic_info_48px"
-            android:text="Info" />
-    </com.google.android.material.tabs.TabLayout>
+        app:tabIndicatorColor="#F57C00"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager2_main"
