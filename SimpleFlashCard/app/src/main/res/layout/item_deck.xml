@@ -5,11 +5,12 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_deck"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Button"
         android:textAlignment="textStart"
-        android:textSize="36dp" />
+        android:textSize="36dp"
+        android:textAllCaps="false"/>
 </LinearLayout>

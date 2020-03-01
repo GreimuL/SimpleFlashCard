@@ -3,17 +3,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpager2_deck_play"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </androidx.cardview.widget.CardView>
-    </androidx.viewpager.widget.ViewPager>
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,16 +22,16 @@
             android:background="?android:attr/listDivider" />
 
         <SeekBar
-            android:id="@+id/seekBar"
+            android:id="@+id/seekbar_deck_play"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="10"
-            android:progress="3" />
+            android:progress="0" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <Button
@@ -45,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Flip: " />
+                android:text="Flip: "/>
 
             <Button
                 android:id="@+id/button6"

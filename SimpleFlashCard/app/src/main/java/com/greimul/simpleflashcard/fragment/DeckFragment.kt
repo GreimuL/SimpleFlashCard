@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,14 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.greimul.simpleflashcard.Card
 import com.greimul.simpleflashcard.Deck
-import com.greimul.simpleflashcard.MainActivity
 import com.greimul.simpleflashcard.R
 import com.greimul.simpleflashcard.adapter.ViewAdapter
-import kotlinx.android.synthetic.main.dialog_new_deck.*
-import kotlinx.android.synthetic.main.fragment_deck.*
 import kotlinx.android.synthetic.main.fragment_deck.view.*
-import kotlinx.android.synthetic.main.item_deck.view.*
-import org.w3c.dom.Text
 
 class DeckFragment: Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -40,7 +33,7 @@ class DeckFragment: Fragment() {
         /////////////////////////////////////////////////////
         var testlist = mutableListOf<Deck>()
         for(i in 0..30)
-            testlist.add(Deck("asdf","asdf", mutableListOf(Card("asdf","asdf")),false))
+            testlist.add(Deck("asdf","asdf", mutableListOf(Card("asdf","asdf"),Card("asdf","asdf"),Card("asdf","asdf")),false))
         /////////////////////////////////////////////////////
 
         viewAdapter = ViewAdapter(testlist)
@@ -52,9 +45,10 @@ class DeckFragment: Fragment() {
             layoutManager = viewManager
             addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
         }
+
         deckFab = view.fab_deck
         deckFab.setOnClickListener {
-            val dialog = AlertDialog.Builder(activity)
+            val dialog = AlertDialog.Builder(activity,R.style.DialogStyle)
             val dialogView = layoutInflater.inflate(R.layout.dialog_new_deck,null)
             dialog.setView(dialogView).setPositiveButton("OK") {
                 dialog,i->
@@ -62,7 +56,6 @@ class DeckFragment: Fragment() {
                 dialog,i->
             }.show()
         }
-
 
         return view
     }
