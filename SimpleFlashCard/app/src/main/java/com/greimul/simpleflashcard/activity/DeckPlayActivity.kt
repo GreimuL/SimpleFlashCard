@@ -1,7 +1,9 @@
 package com.greimul.simpleflashcard.activity
 
 import android.os.Bundle
+import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.greimul.simpleflashcard.Card
 import com.greimul.simpleflashcard.R
@@ -21,7 +23,7 @@ class DeckPlayActivity: AppCompatActivity() {
         val pageMarginPx = resources.getDimension(R.dimen.viewpager2_page_margin)
 
         viewpager2_deck_play.apply{
-            adapter = DeckPlayAdapter(this@DeckPlayActivity, mutableListOf(Card("asdf","asdfasf"),Card("asdf","asdfasf"),Card("asdf","asdfasf")))
+            adapter = DeckPlayAdapter(this@DeckPlayActivity, mutableListOf(Card("asdf","asdfasf"),Card("asdf","asdfasf"),Card("asdf","asdfasf"),Card("asdf","asdfasf"),Card("asdf","asdfasf"),Card("asdf","asdfasf"),Card("asdf","asdfasf"),Card("asdf","asdfasf")))
             clipToPadding = false
             offscreenPageLimit = 1
             setPageTransformer{
@@ -29,10 +31,27 @@ class DeckPlayActivity: AppCompatActivity() {
                 page.translationX = -(previewPx+pageMarginPx)*position
                 page.scaleY = 1-(0.25f*abs(position))
             }
+            registerOnPageChangeCallback(object:ViewPager2.OnPageChangeCallback(){
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    seekbar_deck_play.progress = position
+                }
+            })
         }
 
         seekbar_deck_play.apply{
-            max = listsize
+            max = 7
+            setOnSeekBarChangeListener(object:SeekBar.OnSeekBarChangeListener{
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    viewpager2_deck_play.currentItem = progress
+                }
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            })
         }
     }
 }

@@ -48,7 +48,7 @@ class DeckFragment: Fragment() {
 
         deckFab = view.fab_deck
         deckFab.setOnClickListener {
-            val dialog = AlertDialog.Builder(activity,R.style.DialogStyle)
+            val dialog = AlertDialog.Builder(context,R.style.DialogStyle)
             val dialogView = layoutInflater.inflate(R.layout.dialog_new_deck,null)
             dialog.setView(dialogView).setPositiveButton("OK") {
                 dialog,i->
