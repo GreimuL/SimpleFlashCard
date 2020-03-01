@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -49,6 +50,7 @@ class DeckFragment: Fragment() {
             setHasFixedSize(true)
             adapter = viewAdapter
             layoutManager = viewManager
+            addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
         }
         deckFab = view.fab_deck
         deckFab.setOnClickListener {
