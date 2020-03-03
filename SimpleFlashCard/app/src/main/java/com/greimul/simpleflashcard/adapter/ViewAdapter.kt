@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
-import com.greimul.simpleflashcard.Deck
+import com.greimul.simpleflashcard.db.Deck
 import com.greimul.simpleflashcard.activity.DeckPlayActivity
 import com.greimul.simpleflashcard.R
 import kotlinx.android.synthetic.main.dialog_deck_click.view.*

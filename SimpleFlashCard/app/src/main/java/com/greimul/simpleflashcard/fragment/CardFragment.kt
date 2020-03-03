@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.greimul.simpleflashcard.Card
+import com.greimul.simpleflashcard.db.Card
 import com.greimul.simpleflashcard.R
 
-class CardFragment(card:Card): Fragment(){
+class CardFragment(card: Card): Fragment(){
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -3,9 +3,8 @@ package com.greimul.simpleflashcard.activity
 import android.os.Bundle
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
-import com.greimul.simpleflashcard.Card
+import com.greimul.simpleflashcard.db.Card
 import com.greimul.simpleflashcard.R
 import com.greimul.simpleflashcard.adapter.DeckPlayAdapter
 import kotlinx.android.synthetic.main.activity_deck_play.*
@@ -23,7 +22,19 @@ class DeckPlayActivity: AppCompatActivity() {
         val pageMarginPx = resources.getDimension(R.dimen.viewpager2_page_margin)
 
         viewpager2_deck_play.apply{
-            adapter = DeckPlayAdapter(this@DeckPlayActivity, mutableListOf(Card("asdf","asdfasf"),Card("asdf","asdfasf"),Card("asdf","asdfasf"),Card("asdf","asdfasf"),Card("asdf","asdfasf"),Card("asdf","asdfasf"),Card("asdf","asdfasf"),Card("asdf","asdfasf")))
+            adapter = DeckPlayAdapter(this@DeckPlayActivity, mutableListOf(
+                Card(
+                    "asdf",
+                    "asdfasf"
+                ),
+                Card("asdf", "asdfasf"),
+                Card("asdf", "asdfasf"),
+                Card("asdf", "asdfasf"),
+                Card("asdf", "asdfasf"),
+                Card("asdf", "asdfasf"),
+                Card("asdf", "asdfasf"),
+                Card("asdf", "asdfasf")
+            ))
             clipToPadding = false
             offscreenPageLimit = 1
             setPageTransformer{

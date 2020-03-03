@@ -10,11 +10,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.greimul.simpleflashcard.Card
-import com.greimul.simpleflashcard.Deck
+import com.greimul.simpleflashcard.db.Card
+import com.greimul.simpleflashcard.db.Deck
 import com.greimul.simpleflashcard.R
 import com.greimul.simpleflashcard.adapter.ViewAdapter
+import com.greimul.simpleflashcard.db.DeckDatabase
+import kotlinx.android.synthetic.main.dialog_new_deck.view.*
 import kotlinx.android.synthetic.main.fragment_deck.view.*
+import kotlinx.coroutines.*
 
 class DeckFragment: Fragment() {
     private lateinit var recyclerView: RecyclerView
@@ -29,14 +32,31 @@ class DeckFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View{
         val view = inflater.inflate(R.layout.fragment_deck,container,false)
+        val dbDao = DeckDatabase.getDatabase(context!!).deckDao()
+        val decklist = dbDao.getAll()
 
-        /////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////
+        /*
         var testlist = mutableListOf<Deck>()
         for(i in 0..30)
-            testlist.add(Deck("asdf","asdf", mutableListOf(Card("asdf","asdf"),Card("asdf","asdf"),Card("asdf","asdf")),false))
-        /////////////////////////////////////////////////////
+            testlist.add(
+                Deck(
+                    1,
+                    "asdf",
+                    "asdf",
+                    mutableListOf(
+                        Card(
+                            "asdf",
+                            "asdf"
+                        ),
+                        Card("asdf", "asdf"),
+                        Card("asdf", "asdf")
+                    )
+                )
+            )
+        */ ///////////////////////////////////////////////////
 
-        viewAdapter = ViewAdapter(testlist)
+        viewAdapter = ViewAdapter(decklist)
         viewManager = LinearLayoutManager(activity)
 
         recyclerView = view.recyclerview_deck.apply{
@@ -52,6 +72,13 @@ class DeckFragment: Fragment() {
             val dialogView = layoutInflater.inflate(R.layout.dialog_new_deck,null)
             dialog.setView(dialogView).setPositiveButton("OK") {
                 dialog,i->
+                val deck = Deck(0,
+                    dialogView.edittext_new_name.text.toString(),
+                    dialogView.edittext_new_desc.text.toString(),
+                    mutableListOf())
+                dbDao.insertDeck(deck)
+                decklist.add(deck)
+                viewAdapter.notifyItemInserted(decklist.size-1)
             }.setNegativeButton("Cancle"){
                 dialog,i->
             }.show()
