@@ -74,8 +74,7 @@ class DeckFragment: Fragment() {
                 dialog,i->
                 val deck = Deck(0,
                     dialogView.edittext_new_name.text.toString(),
-                    dialogView.edittext_new_desc.text.toString(),
-                    mutableListOf())
+                    dialogView.edittext_new_desc.text.toString(),3)
                 dbDao.insertDeck(deck)
                 decklist.add(deck)
                 viewAdapter.notifyItemInserted(decklist.size-1)

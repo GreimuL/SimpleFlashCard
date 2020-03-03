@@ -22,19 +22,7 @@ class DeckPlayActivity: AppCompatActivity() {
         val pageMarginPx = resources.getDimension(R.dimen.viewpager2_page_margin)
 
         viewpager2_deck_play.apply{
-            adapter = DeckPlayAdapter(this@DeckPlayActivity, mutableListOf(
-                Card(
-                    "asdf",
-                    "asdfasf"
-                ),
-                Card("asdf", "asdfasf"),
-                Card("asdf", "asdfasf"),
-                Card("asdf", "asdfasf"),
-                Card("asdf", "asdfasf"),
-                Card("asdf", "asdfasf"),
-                Card("asdf", "asdfasf"),
-                Card("asdf", "asdfasf")
-            ))
+            adapter = DeckPlayAdapter(this@DeckPlayActivity, mutableListOf())
             clipToPadding = false
             offscreenPageLimit = 1
             setPageTransformer{

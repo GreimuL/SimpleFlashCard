@@ -34,7 +34,7 @@ class ViewAdapter(private val viewData:MutableList<Deck>): RecyclerView.Adapter<
 
             dialogView.textview_name.text = data.name
             dialogView.textview_desc.text = data.description
-            dialogView.textview_size.text = data.cardList.size.toString()
+            dialogView.textview_size.text = data.size.toString()
 
             dialogView.button_delete.setOnClickListener {
 
@@ -45,7 +45,7 @@ class ViewAdapter(private val viewData:MutableList<Deck>): RecyclerView.Adapter<
             dialogView.button_play.setOnClickListener {
                 val intent = Intent(parent.context,
                     DeckPlayActivity::class.java)
-                parent.context.startActivity(intent.putExtra("size",data.cardList.size))
+                parent.context.startActivity(intent.putExtra("size",data.size))
             }
             dialog.setView(dialogView).show()
         }

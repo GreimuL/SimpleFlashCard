@@ -1,9 +1,6 @@
 package com.greimul.simpleflashcard.db
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface DeckDao {
@@ -16,8 +13,14 @@ interface DeckDao {
     @Query("DELETE FROM deck_db WHERE id = :deckId")
     fun deleteById(deckId: Int)
 
+    @Query("SELECT * FROM card_db WHERE deckId = :deckId")
+    fun loadCardsFromDeck(deckId:Int):List<Card>
+
     @Insert
     fun insertDeck(deck:Deck)
+
+    @Insert
+    fun insertCard(card:Card)
 
     @Delete
     fun deleteDeck(deck:Deck)

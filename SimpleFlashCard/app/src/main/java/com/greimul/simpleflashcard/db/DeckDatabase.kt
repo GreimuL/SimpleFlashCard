@@ -6,8 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = arrayOf(Deck::class),version = 1)
-@TypeConverters(Converters::class)
+@Database(entities = arrayOf(Deck::class,Card::class),version = 1)
 abstract class DeckDatabase:RoomDatabase(){
     abstract fun deckDao():DeckDao
 
