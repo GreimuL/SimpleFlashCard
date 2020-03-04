@@ -6,6 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,16 +19,20 @@ import com.greimul.simpleflashcard.db.Deck
 import com.greimul.simpleflashcard.R
 import com.greimul.simpleflashcard.adapter.ViewAdapter
 import com.greimul.simpleflashcard.db.DeckDatabase
+import com.greimul.simpleflashcard.viewmodel.DeckViewModel
+import kotlinx.android.synthetic.main.activity_deck_play.*
 import kotlinx.android.synthetic.main.dialog_new_deck.view.*
 import kotlinx.android.synthetic.main.fragment_deck.view.*
 import kotlinx.coroutines.*
 
 class DeckFragment: Fragment() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter:RecyclerView.Adapter<*>
+    private lateinit var viewAdapter:ViewAdapter
     private lateinit var viewManager:RecyclerView.LayoutManager
 
     private lateinit var deckFab:FloatingActionButton
+
+    private lateinit var deckViewModel:DeckViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,8 +40,9 @@ class DeckFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View{
         val view = inflater.inflate(R.layout.fragment_deck,container,false)
-        val dbDao = DeckDatabase.getDatabase(context!!).deckDao()
-        val decklist = dbDao.getAll()
+
+        //plz check "activity!!"  find way to remove !!
+        deckViewModel = ViewModelProvider(activity!!.viewModelStore,ViewModelProvider.AndroidViewModelFactory.getInstance(activity!!.application)).get(DeckViewModel::class.java)
 
         ////////////////////////////////////////////////////
         /*
@@ -56,8 +65,13 @@ class DeckFragment: Fragment() {
             )
         */ ///////////////////////////////////////////////////
 
-        viewAdapter = ViewAdapter(decklist)
+        viewAdapter = ViewAdapter()
         viewManager = LinearLayoutManager(activity)
+        deckViewModel.deckList.observe(this,
+            Observer {
+                    decks-> viewAdapter.setDeck(decks)
+            }
+        )
 
         recyclerView = view.recyclerview_deck.apply{
             setHasFixedSize(true)
@@ -74,10 +88,8 @@ class DeckFragment: Fragment() {
                 dialog,i->
                 val deck = Deck(0,
                     dialogView.edittext_new_name.text.toString(),
-                    dialogView.edittext_new_desc.text.toString(),3)
-                dbDao.insertDeck(deck)
-                decklist.add(deck)
-                viewAdapter.notifyItemInserted(decklist.size-1)
+                    dialogView.edittext_new_desc.text.toString(),0)
+                deckViewModel.insert(deck)
             }.setNegativeButton("Cancle"){
                 dialog,i->
             }.show()

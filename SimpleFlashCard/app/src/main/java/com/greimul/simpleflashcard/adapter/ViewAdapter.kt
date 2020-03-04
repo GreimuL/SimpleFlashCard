@@ -13,7 +13,10 @@ import com.greimul.simpleflashcard.R
 import kotlinx.android.synthetic.main.dialog_deck_click.view.*
 import kotlinx.android.synthetic.main.item_deck.view.*
 
-class ViewAdapter(private val viewData:MutableList<Deck>): RecyclerView.Adapter<ViewAdapter.ViewHolder>(){
+class ViewAdapter: RecyclerView.Adapter<ViewAdapter.ViewHolder>(){
+
+    private var viewData = listOf<Deck>()
+
     class ViewHolder(v:View):RecyclerView.ViewHolder(v){
         val button:Button = v.button_deck
     }
@@ -50,5 +53,10 @@ class ViewAdapter(private val viewData:MutableList<Deck>): RecyclerView.Adapter<
             dialog.setView(dialogView).show()
         }
         return viewHolder
+    }
+
+    fun setDeck(deckList:List<Deck>){
+        viewData = deckList
+        notifyDataSetChanged()
     }
 }
