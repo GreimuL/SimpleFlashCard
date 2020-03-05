@@ -10,4 +10,8 @@ class DeckRepo(val deckDao:DeckDao){
     suspend fun insert(deck:Deck){
         deckDao.insertDeck(deck)
     }
+
+    suspend fun delete(id:Int){
+        deckDao.deleteDeckById(id)
+    }
 }

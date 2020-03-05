@@ -6,16 +6,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.greimul.simpleflashcard.db.Deck
 import com.greimul.simpleflashcard.activity.DeckPlayActivity
 import com.greimul.simpleflashcard.R
+import com.greimul.simpleflashcard.activity.CardListActivity
+import com.greimul.simpleflashcard.viewmodel.DeckViewModel
 import kotlinx.android.synthetic.main.dialog_deck_click.view.*
 import kotlinx.android.synthetic.main.item_deck.view.*
+import java.lang.Exception
 
-class ViewAdapter: RecyclerView.Adapter<ViewAdapter.ViewHolder>(){
+class DeckListAdapter(activity:FragmentActivity?): RecyclerView.Adapter<DeckListAdapter.ViewHolder>(){
 
     private var viewData = listOf<Deck>()
+    private lateinit var viewModel:DeckViewModel
+
+    init{
+        viewModel = activity?.run{
+            ViewModelProvider(this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(application))
+                .get(DeckViewModel::class.java)
+        }?:throw Exception("invalid")
+    }
 
     class ViewHolder(v:View):RecyclerView.ViewHolder(v){
         val button:Button = v.button_deck
@@ -31,7 +45,7 @@ class ViewAdapter: RecyclerView.Adapter<ViewAdapter.ViewHolder>(){
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_deck,parent,false)
         val viewHolder = ViewHolder(v)
         viewHolder.button.setOnClickListener {
-            val dialog = AlertDialog.Builder(parent.context,R.style.DialogStyle)
+            val dialogBuilder = AlertDialog.Builder(parent.context,R.style.DialogStyle)
             val dialogView = LayoutInflater.from(parent.context).inflate(R.layout.dialog_deck_click,parent,false)
             val data = viewData[viewHolder.adapterPosition]
 
@@ -39,18 +53,23 @@ class ViewAdapter: RecyclerView.Adapter<ViewAdapter.ViewHolder>(){
             dialogView.textview_desc.text = data.description
             dialogView.textview_size.text = data.size.toString()
 
-            dialogView.button_delete.setOnClickListener {
+            val dialog = dialogBuilder.setView(dialogView).create()
 
+            dialogView.button_delete.setOnClickListener {
+                viewModel.delete(data.id)
+                dialog.dismiss()
             }
             dialogView.button_edit.setOnClickListener {
-
+                val intent = Intent(parent.context,
+                    CardListActivity::class.java)
+                parent.context.startActivity(intent.putExtra("id",data.id))
             }
             dialogView.button_play.setOnClickListener {
                 val intent = Intent(parent.context,
                     DeckPlayActivity::class.java)
                 parent.context.startActivity(intent.putExtra("size",data.size))
             }
-            dialog.setView(dialogView).show()
+            dialog.show()
         }
         return viewHolder
     }

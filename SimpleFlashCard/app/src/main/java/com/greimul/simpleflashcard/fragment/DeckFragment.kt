@@ -6,28 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.greimul.simpleflashcard.db.Card
 import com.greimul.simpleflashcard.db.Deck
 import com.greimul.simpleflashcard.R
-import com.greimul.simpleflashcard.adapter.ViewAdapter
-import com.greimul.simpleflashcard.db.DeckDatabase
+import com.greimul.simpleflashcard.adapter.DeckListAdapter
 import com.greimul.simpleflashcard.viewmodel.DeckViewModel
-import kotlinx.android.synthetic.main.activity_deck_play.*
 import kotlinx.android.synthetic.main.dialog_new_deck.view.*
 import kotlinx.android.synthetic.main.fragment_deck.view.*
-import kotlinx.coroutines.*
+import java.lang.Exception
 
 class DeckFragment: Fragment() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter:ViewAdapter
+    private lateinit var deckListAdapter:DeckListAdapter
     private lateinit var viewManager:RecyclerView.LayoutManager
 
     private lateinit var deckFab:FloatingActionButton
@@ -41,8 +36,11 @@ class DeckFragment: Fragment() {
     ): View{
         val view = inflater.inflate(R.layout.fragment_deck,container,false)
 
-        //plz check "activity!!"  find way to remove !!
-        deckViewModel = ViewModelProvider(activity!!.viewModelStore,ViewModelProvider.AndroidViewModelFactory.getInstance(activity!!.application)).get(DeckViewModel::class.java)
+        deckViewModel = activity?.run{
+            ViewModelProvider(this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(application))
+                .get(DeckViewModel::class.java)
+        }?:throw Exception("invalid")
 
         ////////////////////////////////////////////////////
         /*
@@ -65,17 +63,17 @@ class DeckFragment: Fragment() {
             )
         */ ///////////////////////////////////////////////////
 
-        viewAdapter = ViewAdapter()
+        deckListAdapter = DeckListAdapter(activity)
         viewManager = LinearLayoutManager(activity)
         deckViewModel.deckList.observe(this,
             Observer {
-                    decks-> viewAdapter.setDeck(decks)
+                    decks-> deckListAdapter.setDeck(decks)
             }
         )
 
         recyclerView = view.recyclerview_deck.apply{
             setHasFixedSize(true)
-            adapter = viewAdapter
+            adapter = deckListAdapter
             layoutManager = viewManager
             addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
         }

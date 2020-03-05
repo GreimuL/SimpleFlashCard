@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.greimul.simpleflashcard.db.Card
 import com.greimul.simpleflashcard.R
 import com.greimul.simpleflashcard.adapter.DeckPlayAdapter
+import com.greimul.simpleflashcard.viewmodel.DeckViewModel
 import kotlinx.android.synthetic.main.activity_deck_play.*
 import java.lang.Math.abs
 
@@ -16,7 +17,7 @@ class DeckPlayActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_deck_play)
 
-        val listsize = intent.getIntExtra("size",0)
+        val listSize = intent.getIntExtra("size",0)
 
         val previewPx = resources.getDimension(R.dimen.viewpager2_preview)
         val pageMarginPx = resources.getDimension(R.dimen.viewpager2_page_margin)
@@ -39,7 +40,7 @@ class DeckPlayActivity: AppCompatActivity() {
         }
 
         seekbar_deck_play.apply{
-            max = 7
+            max = listSize
             setOnSeekBarChangeListener(object:SeekBar.OnSeekBarChangeListener{
                 override fun onProgressChanged(
                     seekBar: SeekBar?,

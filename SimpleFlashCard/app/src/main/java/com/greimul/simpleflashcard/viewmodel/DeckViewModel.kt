@@ -23,4 +23,7 @@ class DeckViewModel(application:Application):AndroidViewModel(application) {
         repo.insert(deck)
     }
 
+    fun delete(id:Int) = viewModelScope.launch{
+        repo.delete(id)
+    }
 }

@@ -9,20 +9,11 @@ interface DeckDao {
     fun getAll(): LiveData<List<Deck>>
 
     @Query("SELECT * FROM deck_db WHERE id = :deckId")
-    fun selectByID(deckId:Int):Deck
+    fun selectDeckByID(deckId:Int):Deck
 
     @Query("DELETE FROM deck_db WHERE id = :deckId")
-    suspend fun deleteById(deckId: Int)
-
-    @Query("SELECT * FROM card_db WHERE deckId = :deckId")
-    fun loadCardsFromDeck(deckId:Int):List<Card>
+    suspend fun deleteDeckById(deckId: Int)
 
     @Insert
     suspend fun insertDeck(deck:Deck)
-
-    @Insert
-    suspend fun insertCard(card:Card)
-
-    @Delete
-    suspend fun deleteDeck(deck:Deck)
 }
