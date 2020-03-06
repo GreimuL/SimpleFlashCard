@@ -17,7 +17,7 @@ data class Deck(@PrimaryKey(autoGenerate = true) val id:Int,
         onDelete = CASCADE)
     )
 )
-data class Card(@PrimaryKey val id:Int,
+data class Card(@PrimaryKey(autoGenerate = true) val id:Int,
                 @ColumnInfo(name = "front") var front:String,
                 @ColumnInfo(name = "back") var back:String,
                 val deckId:Int)

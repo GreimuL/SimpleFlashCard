@@ -42,27 +42,6 @@ class DeckFragment: Fragment() {
                 .get(DeckViewModel::class.java)
         }?:throw Exception("invalid")
 
-        ////////////////////////////////////////////////////
-        /*
-        var testlist = mutableListOf<Deck>()
-        for(i in 0..30)
-            testlist.add(
-                Deck(
-                    1,
-                    "asdf",
-                    "asdf",
-                    mutableListOf(
-                        Card(
-                            "asdf",
-                            "asdf"
-                        ),
-                        Card("asdf", "asdf"),
-                        Card("asdf", "asdf")
-                    )
-                )
-            )
-        */ ///////////////////////////////////////////////////
-
         deckListAdapter = DeckListAdapter(activity)
         viewManager = LinearLayoutManager(activity)
         deckViewModel.deckList.observe(this,

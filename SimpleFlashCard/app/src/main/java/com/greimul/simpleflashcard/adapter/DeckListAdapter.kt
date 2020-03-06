@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.SeekBar
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ import com.greimul.simpleflashcard.db.Deck
 import com.greimul.simpleflashcard.activity.DeckPlayActivity
 import com.greimul.simpleflashcard.R
 import com.greimul.simpleflashcard.activity.CardListActivity
+import com.greimul.simpleflashcard.db.Card
 import com.greimul.simpleflashcard.viewmodel.DeckViewModel
 import kotlinx.android.synthetic.main.dialog_deck_click.view.*
 import kotlinx.android.synthetic.main.item_deck.view.*
@@ -51,7 +53,7 @@ class DeckListAdapter(activity:FragmentActivity?): RecyclerView.Adapter<DeckList
 
             dialogView.textview_name.text = data.name
             dialogView.textview_desc.text = data.description
-            dialogView.textview_size.text = data.size.toString()
+            dialogView.textview_size.text = "-"
 
             val dialog = dialogBuilder.setView(dialogView).create()
 
@@ -62,12 +64,12 @@ class DeckListAdapter(activity:FragmentActivity?): RecyclerView.Adapter<DeckList
             dialogView.button_edit.setOnClickListener {
                 val intent = Intent(parent.context,
                     CardListActivity::class.java)
-                parent.context.startActivity(intent.putExtra("id",data.id))
+                parent.context.startActivity(intent.putExtra("deckId",data.id))
             }
             dialogView.button_play.setOnClickListener {
                 val intent = Intent(parent.context,
                     DeckPlayActivity::class.java)
-                parent.context.startActivity(intent.putExtra("size",data.size))
+                parent.context.startActivity(intent.putExtra("deckId",data.id))
             }
             dialog.show()
         }

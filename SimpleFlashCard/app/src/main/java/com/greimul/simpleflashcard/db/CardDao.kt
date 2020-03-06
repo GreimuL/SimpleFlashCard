@@ -1,18 +1,20 @@
 package com.greimul.simpleflashcard.db
 
 import androidx.lifecycle.LiveData
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 
+@Dao
 interface CardDao {
     @Query("SELECT * FROM card_db")
     fun getAll():LiveData<List<Card>>
 
     @Query("SELECT * FROM card_db WHERE id = :cardId")
-    fun selectCardById(cardId:Int)
+    fun selectCardById(cardId:Int):Card
 
     @Query("SELECT * FROM card_db WHERE deckId = :deckId")
-    fun loadCardsFromDeck(deckId:Int):List<Card>
+    fun getCardsFromDeck(deckId:Int):LiveData<List<Card>>
 
     @Query("DELETE FROM card_db WHERE id = :cardId")
     suspend fun deleteCardById(cardId:Int)

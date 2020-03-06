@@ -9,6 +9,7 @@ import androidx.room.TypeConverters
 @Database(entities = arrayOf(Deck::class,Card::class),version = 1)
 abstract class DeckDatabase:RoomDatabase(){
     abstract fun deckDao():DeckDao
+    abstract fun cardDao():CardDao
 
     companion object{
         @Volatile

@@ -3,27 +3,41 @@ package com.greimul.simpleflashcard.activity
 import android.os.Bundle
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.greimul.simpleflashcard.db.Card
 import com.greimul.simpleflashcard.R
 import com.greimul.simpleflashcard.adapter.DeckPlayAdapter
+import com.greimul.simpleflashcard.viewmodel.CardViewModel
 import com.greimul.simpleflashcard.viewmodel.DeckViewModel
 import kotlinx.android.synthetic.main.activity_deck_play.*
 import java.lang.Math.abs
 
 class DeckPlayActivity: AppCompatActivity() {
 
+    private lateinit var cardViewModel:CardViewModel
+    private lateinit var deckPlayAdapter: DeckPlayAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_deck_play)
 
-        val listSize = intent.getIntExtra("size",0)
+        val deckId = intent.getIntExtra("deckId",0)
+
+        deckPlayAdapter = DeckPlayAdapter(this,seekbar_deck_play)
+
+        cardViewModel = CardViewModel(application,deckId)
+        cardViewModel.cardList.observe(this,
+            Observer {
+                    cards -> deckPlayAdapter.setCards(cards)
+            }
+        )
 
         val previewPx = resources.getDimension(R.dimen.viewpager2_preview)
         val pageMarginPx = resources.getDimension(R.dimen.viewpager2_page_margin)
 
         viewpager2_deck_play.apply{
-            adapter = DeckPlayAdapter(this@DeckPlayActivity, mutableListOf())
+            adapter = deckPlayAdapter
             clipToPadding = false
             offscreenPageLimit = 1
             setPageTransformer{
@@ -40,7 +54,7 @@ class DeckPlayActivity: AppCompatActivity() {
         }
 
         seekbar_deck_play.apply{
-            max = listSize
+            max = 0
             setOnSeekBarChangeListener(object:SeekBar.OnSeekBarChangeListener{
                 override fun onProgressChanged(
                     seekBar: SeekBar?,
