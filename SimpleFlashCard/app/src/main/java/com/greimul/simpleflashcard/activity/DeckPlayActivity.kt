@@ -1,6 +1,9 @@
 package com.greimul.simpleflashcard.activity
 
+import android.content.Context
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.View
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -12,6 +15,7 @@ import com.greimul.simpleflashcard.adapter.DeckPlayAdapter
 import com.greimul.simpleflashcard.viewmodel.CardViewModel
 import com.greimul.simpleflashcard.viewmodel.DeckViewModel
 import kotlinx.android.synthetic.main.activity_deck_play.*
+import kotlinx.coroutines.*
 import java.lang.Math.abs
 
 class DeckPlayActivity: AppCompatActivity() {
@@ -66,6 +70,17 @@ class DeckPlayActivity: AppCompatActivity() {
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {}
             })
+        }
+
+        button_bottom_left.setOnClickListener {
+            viewpager2_deck_play.currentItem--
+        }
+        button_bottom_right.setOnClickListener {
+            viewpager2_deck_play.currentItem++
+        }
+        button_bottom_right
+        button_bottom_flip.setOnClickListener {
+            deckPlayAdapter.fragment.flipCard()
         }
     }
 }

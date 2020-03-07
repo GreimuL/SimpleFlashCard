@@ -11,9 +11,14 @@ class DeckPlayAdapter(fa: FragmentActivity,seekBar: SeekBar): FragmentStateAdapt
 
     private var viewData = listOf<Card>()
     private val seekBar = seekBar
+
+    lateinit var fragment:CardFragment
+
     override fun createFragment(position: Int): Fragment {
-        return CardFragment(viewData[position])
+        fragment = CardFragment(viewData[position])
+        return fragment
     }
+
     override fun getItemCount():Int=viewData.size
 
     fun setCards(cardList:List<Card>){

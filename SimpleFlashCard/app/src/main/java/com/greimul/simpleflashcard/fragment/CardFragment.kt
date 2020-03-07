@@ -31,4 +31,8 @@ class CardFragment(card: Card): Fragment(){
         }
         return view
     }
+
+    fun flipCard(){
+
+    }
 }
