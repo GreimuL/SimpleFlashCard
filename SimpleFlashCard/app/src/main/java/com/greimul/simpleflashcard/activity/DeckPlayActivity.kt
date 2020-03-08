@@ -1,34 +1,32 @@
 package com.greimul.simpleflashcard.activity
 
-import android.content.Context
 import android.os.Bundle
-import android.view.MotionEvent
-import android.view.View
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.size
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
-import com.greimul.simpleflashcard.db.Card
 import com.greimul.simpleflashcard.R
+import com.greimul.simpleflashcard.adapter.AdapterTest
 import com.greimul.simpleflashcard.adapter.DeckPlayAdapter
 import com.greimul.simpleflashcard.viewmodel.CardViewModel
-import com.greimul.simpleflashcard.viewmodel.DeckViewModel
 import kotlinx.android.synthetic.main.activity_deck_play.*
-import kotlinx.coroutines.*
 import java.lang.Math.abs
+import java.sql.Time
 
 class DeckPlayActivity: AppCompatActivity() {
 
     private lateinit var cardViewModel:CardViewModel
     private lateinit var deckPlayAdapter: DeckPlayAdapter
+
+    var isAllFlip = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_deck_play)
 
         val deckId = intent.getIntExtra("deckId",0)
 
-        deckPlayAdapter = DeckPlayAdapter(this,seekbar_deck_play)
+        deckPlayAdapter = DeckPlayAdapter(seekbar_deck_play)
 
         cardViewModel = CardViewModel(application,deckId)
         cardViewModel.cardList.observe(this,
@@ -72,15 +70,29 @@ class DeckPlayActivity: AppCompatActivity() {
             })
         }
 
+        button_flip_all.setOnClickListener {
+            deckPlayAdapter.flipAllCards()
+            isAllFlip = !isAllFlip
+            if(isAllFlip)
+                button_flip_all.text = "All: Back"
+            else
+                button_flip_all.text = "All: Front"
+        }
+
         button_bottom_left.setOnClickListener {
             viewpager2_deck_play.currentItem--
         }
         button_bottom_right.setOnClickListener {
             viewpager2_deck_play.currentItem++
         }
-        button_bottom_right
         button_bottom_flip.setOnClickListener {
-            deckPlayAdapter.fragment.flipCard()
+            deckPlayAdapter.flipCard(viewpager2_deck_play.currentItem)
+        }
+        button_random.setOnClickListener {
+            viewpager2_deck_play.currentItem = (0 until deckPlayAdapter.itemCount).random()
+        }
+        button_shuffle.setOnClickListener {
+            deckPlayAdapter.shuffleCards()
         }
     }
 }

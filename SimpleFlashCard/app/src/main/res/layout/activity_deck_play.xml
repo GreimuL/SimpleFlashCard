@@ -36,21 +36,21 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/button_flip_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Flip: " />
+                android:text="All: Front" />
 
             <Button
-                android:id="@+id/button6"
+                android:id="@+id/button_shuffle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Shuffle" />
 
             <Button
-                android:id="@+id/button7"
+                android:id="@+id/button_random"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -71,13 +71,14 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <Button
+        <ImageButton
             android:id="@+id/button_bottom_left"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_keyboard_arrow_left_48px" />
+            android:src="@drawable/ic_keyboard_arrow_left_48px"
+            android:foreground="?attr/selectableItemBackground"/>
 
         <View
             android:id="@+id/divider7"
@@ -85,13 +86,15 @@
             android:layout_height="match_parent"
             android:background="?android:attr/listDivider" />
 
-        <Button
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        <ImageButton
             android:id="@+id/button_bottom_flip"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Button" />
+            android:gravity="center"
+            android:src="@drawable/ic_flip_48px"
+            android:foreground="?attr/selectableItemBackground"/>
 
         <View
             android:id="@+id/divider8"
@@ -99,13 +102,14 @@
             android:layout_height="match_parent"
             android:background="?android:attr/listDivider" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button_bottom_right"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:drawableRight="@drawable/ic_keyboard_arrow_right_48px" />
+            android:src="@drawable/ic_keyboard_arrow_right_48px"
+            android:foreground="?attr/selectableItemBackground"/>
     </LinearLayout>
 
 </LinearLayout>
