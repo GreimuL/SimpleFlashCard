@@ -3,21 +3,18 @@ package com.greimul.simpleflashcard.activity
 import android.os.Bundle
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.size
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.greimul.simpleflashcard.R
-import com.greimul.simpleflashcard.adapter.AdapterTest
-import com.greimul.simpleflashcard.adapter.DeckPlayAdapter
+import com.greimul.simpleflashcard.adapter.CardAdapter
 import com.greimul.simpleflashcard.viewmodel.CardViewModel
 import kotlinx.android.synthetic.main.activity_deck_play.*
 import java.lang.Math.abs
-import java.sql.Time
 
 class DeckPlayActivity: AppCompatActivity() {
 
     private lateinit var cardViewModel:CardViewModel
-    private lateinit var deckPlayAdapter: DeckPlayAdapter
+    private lateinit var deckPlayAdapter: CardAdapter
 
     var isAllFlip = false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +23,7 @@ class DeckPlayActivity: AppCompatActivity() {
 
         val deckId = intent.getIntExtra("deckId",0)
 
-        deckPlayAdapter = DeckPlayAdapter(seekbar_deck_play)
+        deckPlayAdapter = CardAdapter(seekbar_deck_play,1)
 
         cardViewModel = CardViewModel(application,deckId)
         cardViewModel.cardList.observe(this,

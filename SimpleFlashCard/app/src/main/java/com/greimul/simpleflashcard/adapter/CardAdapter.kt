@@ -9,41 +9,57 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.greimul.simpleflashcard.R
 import com.greimul.simpleflashcard.db.Card
+import kotlinx.android.synthetic.main.item_card.view.*
 import kotlinx.android.synthetic.main.item_card_play.view.*
 import java.util.*
 
-class DeckPlayAdapter(seekBar: SeekBar):RecyclerView.Adapter<DeckPlayAdapter.ViewHolder>() {
+class CardAdapter(private val seekBar: SeekBar?, private val type:Int): RecyclerView.Adapter<CardAdapter.ViewHolder>() {
 
     var originData:List<Card> = listOf()
     var viewData:List<Card> = listOf()
-    val seekBar = seekBar
-    var flipSet:BitSet = BitSet()
+    var flipSet: BitSet = BitSet()
     var isAllFlip:Boolean = false
 
-    class ViewHolder(v: View):RecyclerView.ViewHolder(v){
-        val textView: TextView = v.textview_play_card_text
-        val cardView: CardView = v.cardview_play_card
+    class ViewHolder(v: View, type:Int): RecyclerView.ViewHolder(v){
+        lateinit var textView: TextView
+        lateinit var cardView: CardView
+        init{
+            when(type){
+                0-> {
+                    textView = v.textview_card_text
+                    cardView = v.cardview_card
+                }
+                1->{
+                    textView = v.textview_play_card_text
+                    cardView = v.cardview_play_card
+                }
+            }
+        }
     }
 
     override fun getItemCount(): Int = viewData.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(flipSet[position])
-            holder.textView.text = "${viewData[holder.adapterPosition].id}"+viewData[holder.adapterPosition].back
+            holder.textView.text = viewData[holder.adapterPosition].back
         else
-            holder.textView.text = "${viewData[holder.adapterPosition].id}"+viewData[holder.adapterPosition].front
+            holder.textView.text = viewData[holder.adapterPosition].front
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_card_play,parent,false)
-        val viewHolder = ViewHolder(v)
+        val v: View = when(type){
+            0-> LayoutInflater.from(parent.context).inflate(R.layout.item_card,parent,false)
+            1-> LayoutInflater.from(parent.context).inflate(R.layout.item_card_play,parent,false)
+            else-> LayoutInflater.from(parent.context).inflate(R.layout.item_card_play,parent,false)
+        }
+        val viewHolder = ViewHolder(v,type)
 
         viewHolder.cardView.setOnClickListener {
             flipSet[viewHolder.adapterPosition] = !flipSet[viewHolder.adapterPosition]
             if(flipSet[viewHolder.adapterPosition])
-                viewHolder.textView.text = "${viewData[viewHolder.adapterPosition].id}"+viewData[viewHolder.adapterPosition].back
+                viewHolder.textView.text = viewData[viewHolder.adapterPosition].back
             else
-                viewHolder.textView.text = "${viewData[viewHolder.adapterPosition].id}"+viewData[viewHolder.adapterPosition].front
+                viewHolder.textView.text = viewData[viewHolder.adapterPosition].front
         }
 
         return viewHolder
@@ -54,12 +70,13 @@ class DeckPlayAdapter(seekBar: SeekBar):RecyclerView.Adapter<DeckPlayAdapter.Vie
         originData = cardList
         flipSet = BitSet(viewData.size)
         notifyDataSetChanged()
-        seekBar.max = viewData.size-1
+        if(seekBar!=null)
+            seekBar.max = viewData.size-1
     }
 
     fun flipCard(position: Int){
         flipSet.flip(position)
-        notifyDataSetChanged()
+        notifyItemChanged(position)
     }
 
     fun flipAllCards(){

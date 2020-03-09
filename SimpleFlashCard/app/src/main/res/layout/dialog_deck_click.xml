@@ -95,7 +95,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Delete"
-            android:textSize="36dp"
             android:textColor="@android:color/holo_red_light"/>
 
         <Button
@@ -104,8 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Edit"
-            android:textSize="36dp" />
+            android:text="Edit"/>
 
         <Button
             android:id="@+id/button_play"
@@ -113,7 +111,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Play"
-            android:textSize="36dp" />
+            android:text="Play"/>
     </LinearLayout>
 </LinearLayout>
