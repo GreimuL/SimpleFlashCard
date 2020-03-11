@@ -5,16 +5,18 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.greimul.simpleflashcard.fragment.DeckFragment
 import com.greimul.simpleflashcard.fragment.ErrorFragment
+import com.greimul.simpleflashcard.fragment.ImExportFragment
 import com.greimul.simpleflashcard.fragment.InfoFragment
+import com.greimul.simpleflashcard.viewmodel.DeckViewModel
 
-class ViewPagerAdapter(fa: FragmentActivity): FragmentStateAdapter(fa){
+class ViewPagerAdapter(fa: FragmentActivity,val deckViewModel:DeckViewModel): FragmentStateAdapter(fa){
 
     val PAGE_CNT = 3
 
     override fun createFragment(position: Int): Fragment {
         return when(position){
-            0 -> DeckFragment()
-            1 -> InfoFragment()
+            0 -> DeckFragment(deckViewModel)
+            1 -> ImExportFragment()
             2 -> InfoFragment()
             else -> ErrorFragment()
         }

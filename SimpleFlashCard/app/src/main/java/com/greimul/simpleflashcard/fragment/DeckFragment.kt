@@ -20,14 +20,10 @@ import kotlinx.android.synthetic.main.dialog_new_deck.view.*
 import kotlinx.android.synthetic.main.fragment_deck.view.*
 import java.lang.Exception
 
-class DeckFragment: Fragment() {
+class DeckFragment(val deckViewModel:DeckViewModel): Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var deckListAdapter:DeckListAdapter
     private lateinit var viewManager:RecyclerView.LayoutManager
-
-    private lateinit var deckFab:FloatingActionButton
-
-    private lateinit var deckViewModel:DeckViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,40 +32,20 @@ class DeckFragment: Fragment() {
     ): View{
         val view = inflater.inflate(R.layout.fragment_deck,container,false)
 
-        deckViewModel = activity?.run{
-            ViewModelProvider(this,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(application))
-                .get(DeckViewModel::class.java)
-        }?:throw Exception("invalid")
-
         deckListAdapter = DeckListAdapter(activity)
-        viewManager = LinearLayoutManager(activity)
         deckViewModel.deckList.observe(this,
             Observer {
                     decks-> deckListAdapter.setDeck(decks)
             }
         )
 
+        viewManager = LinearLayoutManager(activity)
+
         recyclerView = view.recyclerview_deck.apply{
             setHasFixedSize(true)
             adapter = deckListAdapter
             layoutManager = viewManager
             addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
-        }
-
-        deckFab = view.fab_deck
-        deckFab.setOnClickListener {
-            val dialog = AlertDialog.Builder(context,R.style.DialogStyle)
-            val dialogView = layoutInflater.inflate(R.layout.dialog_new_deck,null)
-            dialog.setView(dialogView).setPositiveButton("OK") {
-                dialog,i->
-                val deck = Deck(0,
-                    dialogView.edittext_new_name.text.toString(),
-                    dialogView.edittext_new_desc.text.toString(),0)
-                deckViewModel.insert(deck)
-            }.setNegativeButton("Cancle"){
-                dialog,i->
-            }.show()
         }
 
         return view

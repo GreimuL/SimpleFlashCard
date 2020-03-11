@@ -1,5 +1,8 @@
 package com.greimul.simpleflashcard.adapter
 
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,6 +59,8 @@ class AdapterTest(private val seekBar: SeekBar?, private val type:Int): Recycler
         val viewHolder = ViewHolder(v,type)
 
         viewHolder.cardView.setOnClickListener {
+
+
             flipSet[viewHolder.adapterPosition] = !flipSet[viewHolder.adapterPosition]
             if(flipSet[viewHolder.adapterPosition])
                 viewHolder.textView.text = viewData[viewHolder.adapterPosition].back

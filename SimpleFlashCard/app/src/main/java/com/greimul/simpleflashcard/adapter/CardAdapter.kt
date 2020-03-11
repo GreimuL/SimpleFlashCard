@@ -1,10 +1,14 @@
 package com.greimul.simpleflashcard.adapter
 
+import android.animation.AnimatorInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.ViewFlipper
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.greimul.simpleflashcard.R
@@ -40,6 +44,10 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int): Recycler
     override fun getItemCount(): Int = viewData.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if(type==0)
+            holder.itemView.startAnimation(AlphaAnimation(0f,1f).apply{
+                duration=300
+            })
         if(flipSet[position])
             holder.textView.text = viewData[holder.adapterPosition].back
         else
@@ -53,13 +61,16 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int): Recycler
             else-> LayoutInflater.from(parent.context).inflate(R.layout.item_card_play,parent,false)
         }
         val viewHolder = ViewHolder(v,type)
-
-        viewHolder.cardView.setOnClickListener {
+        val curView = viewHolder.cardView
+        val curText = viewHolder.textView
+        curView.setOnClickListener {
             flipSet[viewHolder.adapterPosition] = !flipSet[viewHolder.adapterPosition]
-            if(flipSet[viewHolder.adapterPosition])
-                viewHolder.textView.text = viewData[viewHolder.adapterPosition].back
-            else
-                viewHolder.textView.text = viewData[viewHolder.adapterPosition].front
+            if(flipSet[viewHolder.adapterPosition]) {
+                curText.text = viewData[viewHolder.adapterPosition].back
+            }
+            else {
+                curText.text = viewData[viewHolder.adapterPosition].front
+            }
         }
 
         return viewHolder
@@ -72,6 +83,10 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int): Recycler
         notifyDataSetChanged()
         if(seekBar!=null)
             seekBar.max = viewData.size-1
+    }
+
+    fun flipAnimation(){
+
     }
 
     fun flipCard(position: Int){
