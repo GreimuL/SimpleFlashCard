@@ -26,4 +26,6 @@ class DeckViewModel(application:Application):AndroidViewModel(application) {
     fun delete(deckId:Int) = viewModelScope.launch{
         repo.delete(deckId)
     }
+
+    fun countCards(deckId: Int):LiveData<Int> = repo.countCards(deckId)
 }

@@ -6,24 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.SeekBar
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.greimul.simpleflashcard.db.Deck
 import com.greimul.simpleflashcard.activity.DeckPlayActivity
 import com.greimul.simpleflashcard.R
 import com.greimul.simpleflashcard.activity.CardListActivity
-import com.greimul.simpleflashcard.db.Card
 import com.greimul.simpleflashcard.viewmodel.DeckViewModel
 import kotlinx.android.synthetic.main.dialog_deck_click.view.*
 import kotlinx.android.synthetic.main.item_deck.view.*
 import java.lang.Exception
 
-class DeckListAdapter(activity:FragmentActivity?): RecyclerView.Adapter<DeckListAdapter.ViewHolder>(){
+class DeckListAdapter(val activity:FragmentActivity?,val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<DeckListAdapter.ViewHolder>(){
 
     private var viewData = listOf<Deck>()
-    private lateinit var viewModel:DeckViewModel
+    private var viewModel:DeckViewModel
 
     init{
         viewModel = activity?.run{
@@ -53,7 +53,9 @@ class DeckListAdapter(activity:FragmentActivity?): RecyclerView.Adapter<DeckList
 
             dialogView.textview_name.text = data.name
             dialogView.textview_desc.text = data.description
-            dialogView.textview_size.text = "-"
+            viewModel.countCards(data.id).observe(lifecycleOwner, Observer {
+                dialogView.textview_size.text = it.toString()
+            })
 
             val dialog = dialogBuilder.setView(dialogView).create()
 

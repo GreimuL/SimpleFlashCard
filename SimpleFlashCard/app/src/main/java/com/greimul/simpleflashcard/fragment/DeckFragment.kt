@@ -32,7 +32,7 @@ class DeckFragment(val deckViewModel:DeckViewModel): Fragment() {
     ): View{
         val view = inflater.inflate(R.layout.fragment_deck,container,false)
 
-        deckListAdapter = DeckListAdapter(activity)
+        deckListAdapter = DeckListAdapter(activity,this)
         deckViewModel.deckList.observe(this,
             Observer {
                     decks-> deckListAdapter.setDeck(decks)
