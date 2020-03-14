@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
         android:layout_margin="48dp"
-        android:text="Flip" />
+        android:text="All: Front" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_card"

@@ -23,6 +23,8 @@ class CardListActivity:AppCompatActivity() {
 
     private lateinit var cardViewModel:CardViewModel
 
+    var isAllFlip:Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_list)
@@ -67,6 +69,11 @@ class CardListActivity:AppCompatActivity() {
         }
 
         button_flip_card_list.setOnClickListener {
+            isAllFlip = !isAllFlip
+            if(isAllFlip)
+                button_flip_card_list.text = "All: Back"
+            else
+                button_flip_card_list.text = "All: Front"
             cardListAdapter.flipAllCards()
         }
     }
