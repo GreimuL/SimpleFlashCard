@@ -60,8 +60,17 @@ class DeckListAdapter(val activity:FragmentActivity?,val lifecycleOwner: Lifecyc
             val dialog = dialogBuilder.setView(dialogView).create()
 
             dialogView.button_delete.setOnClickListener {
-                viewModel.delete(data.id)
-                dialog.dismiss()
+                dialog.hide()
+
+                val secondDialogBuilder = AlertDialog.Builder(parent.context,R.style.DialogStyle)
+                val secondDialogView = LayoutInflater.from(parent.context).inflate(R.layout.dialog_deck_delete,parent,false)
+                val secondDialog = secondDialogBuilder.setView(secondDialogView).setPositiveButton("OK"){
+                    dialog, i ->
+                        viewModel.delete(data.id)
+                        dialog.dismiss()
+                }.setNegativeButton("Cancle"){
+                    dialog,i->
+                }.show()
             }
             dialogView.button_edit.setOnClickListener {
                 val intent = Intent(parent.context,
