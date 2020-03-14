@@ -44,6 +44,7 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int): Recycler
     override fun getItemCount(): Int = viewData.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        flipAnimation(holder.cardView)
         if(type==0)
             holder.itemView.startAnimation(AlphaAnimation(0f,1f).apply{
                 duration=300
@@ -64,6 +65,7 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int): Recycler
         val curView = viewHolder.cardView
         val curText = viewHolder.textView
         curView.setOnClickListener {
+            flipAnimation(curView)
             flipSet[viewHolder.adapterPosition] = !flipSet[viewHolder.adapterPosition]
             if(flipSet[viewHolder.adapterPosition]) {
                 curText.text = viewData[viewHolder.adapterPosition].back
@@ -85,8 +87,9 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int): Recycler
             seekBar.max = viewData.size-1
     }
 
-    fun flipAnimation(){
-
+    fun flipAnimation(cardView: CardView){
+        cardView.startAnimation(AlphaAnimation(1f,0f).apply{duration=500})
+        cardView.startAnimation(AlphaAnimation(0f,1f).apply{duration=500})
     }
 
     fun flipCard(position: Int){
