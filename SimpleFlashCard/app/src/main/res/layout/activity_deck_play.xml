@@ -32,27 +32,33 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/button_flip_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:textSize = "16dp"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="All: Front" />
 
             <Button
                 android:id="@+id/button_shuffle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Button"
+                android:textSize = "16dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Shuffle" />
 
             <Button
                 android:id="@+id/button_random"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:textSize = "16dp"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Random" />
         </LinearLayout>

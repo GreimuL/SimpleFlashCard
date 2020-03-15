@@ -16,7 +16,7 @@ class ViewPagerAdapter(fa: FragmentActivity,val deckViewModel:DeckViewModel): Fr
     override fun createFragment(position: Int): Fragment {
         return when(position){
             0 -> DeckFragment(deckViewModel)
-            1 -> ImExportFragment()
+            1 -> ImExportFragment(deckViewModel)
             2 -> InfoFragment()
             else -> ErrorFragment()
         }

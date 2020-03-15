@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                     dialogView.edittext_new_name.text.toString(),
                     dialogView.edittext_new_desc.text.toString(),0)
                 deckViewModel.insert(deck)
-            }.setNegativeButton("Cancle"){
+            }.setNegativeButton("Cancel"){
                     dialog,i->
             }.show()
         }

@@ -68,7 +68,8 @@ class DeckPlayActivity: AppCompatActivity() {
         }
 
         button_flip_all.setOnClickListener {
-            deckPlayAdapter.flipAllCards()
+            if(deckPlayAdapter.itemCount!=0)
+                deckPlayAdapter.flipAllCards()
             isAllFlip = !isAllFlip
             if(isAllFlip)
                 button_flip_all.text = "All: Back"
@@ -86,7 +87,8 @@ class DeckPlayActivity: AppCompatActivity() {
             deckPlayAdapter.flipCard(viewpager2_deck_play.currentItem)
         }
         button_random.setOnClickListener {
-            viewpager2_deck_play.currentItem = (0 until deckPlayAdapter.itemCount).random()
+            if(deckPlayAdapter.itemCount!=0)
+                viewpager2_deck_play.currentItem = (0 until deckPlayAdapter.itemCount).random()
         }
         button_shuffle.setOnClickListener {
             deckPlayAdapter.shuffleCards()
