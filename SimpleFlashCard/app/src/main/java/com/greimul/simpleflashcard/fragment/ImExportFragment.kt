@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,8 @@ class ImExportFragment(val deckViewModel:DeckViewModel) : Fragment(){
 
     lateinit var extractListAdapter:ExtractListAdapter
     lateinit var testList:List<Card>
+
+    val cardList = mutableListOf<Card>()
 
     var isFileSelected:Boolean = false
     lateinit var deckUri:Uri
@@ -60,8 +63,13 @@ class ImExportFragment(val deckViewModel:DeckViewModel) : Fragment(){
         view.button_extract.setOnClickListener {
             val str:String
             val cardList:List<Card>
-            //edittext null issue : fix later
-            val delimiter:Char = edittext_delimiter.text.toString()[0]
+            val delimiter:Char
+
+            if(edittext_delimiter.text.isNotEmpty())
+                delimiter = edittext_delimiter.text.toString()[0]
+            else
+                delimiter = '\n'
+
             if(isFileSelected) {
                 str = getStringFromUri(deckUri)
                 cardList = getCardListFromString(str,delimiter)
@@ -70,6 +78,10 @@ class ImExportFragment(val deckViewModel:DeckViewModel) : Fragment(){
             else{
 
             }
+        }
+        view.button_clear.setOnClickListener {
+            cardList.clear()
+            extractListAdapter.setExtractList(cardList)
         }
         view.button_import.setOnClickListener {
             val dialog = AlertDialog.Builder(context,R.style.DialogStyle)
@@ -94,26 +106,29 @@ class ImExportFragment(val deckViewModel:DeckViewModel) : Fragment(){
         }
         startActivityForResult(intent,3)
     }
-    //cant read korean
+    //Charset to CP949... is this really best solution?
     fun getStringFromUri(uri:Uri):String{
         val strBuilder = StringBuilder()
         context?.contentResolver?.openInputStream(uri).use{
-            BufferedReader(InputStreamReader(it)).use{
-                var currentLine = it.readLine()
+            BufferedReader(InputStreamReader(it,"CP949")).use{ bufferedReader->
+                var currentLine = bufferedReader.readLine()
                 while(currentLine!=null){
                     strBuilder.append(currentLine)
-                    currentLine = it.readLine()
+                    strBuilder.append('\n')
+                    Log.d("test",currentLine)
+                    currentLine = bufferedReader.readLine()
                 }
+                if(strBuilder.isNotEmpty())
+                    strBuilder.deleteCharAt(strBuilder.length-1)
             }
         }
         return strBuilder.toString()
     }
 
     fun getCardListFromString(str:String, delimiter:Char):List<Card>{
-        val cardList = mutableListOf<Card>()
         var isFront:Boolean = true
-        var front:String? = ""
-        var back:String? = ""
+        var front:String? = null
+        var back:String? = null
 
         var currentWord = StringBuilder()
         str.forEach{
@@ -134,8 +149,14 @@ class ImExportFragment(val deckViewModel:DeckViewModel) : Fragment(){
             else
                 currentWord.append(it)
         }
-        if(front!=null)
-            cardList.add(Card(0,front?:"",currentWord.toString(),0))
+        if(currentWord.isNotEmpty())
+            if(front!=null)
+                back = currentWord.toString()
+            else
+                front = currentWord.toString()
+
+        cardList.add(Card(0,front?:"",back?:"",0))
+
 
         return cardList
     }
