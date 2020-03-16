@@ -4,7 +4,9 @@ import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -13,6 +15,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.greimul.simpleflashcard.R
 import com.greimul.simpleflashcard.adapter.ViewPagerAdapter
 import com.greimul.simpleflashcard.db.Deck
+import com.greimul.simpleflashcard.viewmodel.CardViewModel
 import com.greimul.simpleflashcard.viewmodel.DeckViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_new_deck.view.*
