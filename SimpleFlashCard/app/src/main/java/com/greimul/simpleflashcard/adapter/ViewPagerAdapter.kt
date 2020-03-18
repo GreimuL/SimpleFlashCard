@@ -3,10 +3,7 @@ package com.greimul.simpleflashcard.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.greimul.simpleflashcard.fragment.DeckFragment
-import com.greimul.simpleflashcard.fragment.ErrorFragment
-import com.greimul.simpleflashcard.fragment.ImExportFragment
-import com.greimul.simpleflashcard.fragment.InfoFragment
+import com.greimul.simpleflashcard.fragment.*
 import com.greimul.simpleflashcard.viewmodel.DeckViewModel
 
 class ViewPagerAdapter(fa: FragmentActivity,val deckViewModel:DeckViewModel): FragmentStateAdapter(fa){
