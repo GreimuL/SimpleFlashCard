@@ -18,18 +18,17 @@
     
     <style name="DialogFullScreen" parent="Theme.MaterialComponents.Dialog">
         <item name="android:windowFullscreen">true</item>
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
+        <item name="colorControlNormal">@android:color/white</item>
     </style>
 
     <style name="ButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">24dp</item>
+        <item name="android:textSize">24sp</item>
     </style>
 
     <style name="DialogTextViewStyle">
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">36dp</item>
+        <item name="android:textSize">36sp</item>
     </style>
 
     <style name="SeekBarStyle" parent = "Widget.AppCompat.SeekBar.Discrete">
@@ -37,7 +36,11 @@
     </style>
 
     <style name="StandardTextStyle">
-        <item name="android:textSize">24dp</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="InfoTextStyle">
+        <item name="android:textSize">24sp</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 </resources>

@@ -1,19 +1,26 @@
 package com.greimul.simpleflashcard.activity
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.navigation.NavigationView
 import com.greimul.simpleflashcard.R
 import com.greimul.simpleflashcard.adapter.CardAdapter
 import com.greimul.simpleflashcard.db.Card
 import com.greimul.simpleflashcard.viewmodel.CardViewModel
 import kotlinx.android.synthetic.main.activity_card_list.*
+import kotlinx.android.synthetic.main.dialog_new_card.*
 import kotlinx.android.synthetic.main.dialog_new_card.view.*
+import kotlinx.android.synthetic.main.dialog_new_card.view.toolbar_new_card
 
 class CardListActivity:AppCompatActivity() {
 
@@ -55,14 +62,15 @@ class CardListActivity:AppCompatActivity() {
         }
 
         fab_card.setOnClickListener {
-            val dialog = AlertDialog.Builder(this,R.style.DialogStyle)
+            val dialog = AlertDialog.Builder(this,R.style.DialogFullScreen)
             val dialogView = layoutInflater.inflate(R.layout.dialog_new_card,null)
-            dialog.setPositiveButton("OK"){
-                dialog,which->
-                cardViewModel.insert(Card(0,dialogView.edittext_front.text.toString(),dialogView.edittext_back.text.toString(),deckId))
-            }.setNegativeButton("Cancel"){
-                dialog, which ->
 
+            dialogView.toolbar_new_card.apply{
+                title = "New Card"
+                setNavigationIcon(R.drawable.ic_close_48px)
+                setNavigationOnClickListener {
+
+                }
             }
             dialog.setView(dialogView).show()
                 //recyclerView.scrollToPosition(cardListAdapter.itemCount)
