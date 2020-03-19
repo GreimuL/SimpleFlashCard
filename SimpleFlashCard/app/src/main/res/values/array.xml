@@ -4,4 +4,8 @@
         <item>UTF8</item>
         <item>MS949</item>
     </string-array>
+    <string-array name="choose">
+        <item>File</item>
+        <item>Deck</item>
+    </string-array>
 </resources>

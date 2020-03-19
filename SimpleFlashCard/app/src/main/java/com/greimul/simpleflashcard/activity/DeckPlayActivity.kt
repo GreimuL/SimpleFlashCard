@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.greimul.simpleflashcard.R
 import com.greimul.simpleflashcard.adapter.CardAdapter
@@ -25,7 +27,14 @@ class DeckPlayActivity: AppCompatActivity() {
 
         deckPlayAdapter = CardAdapter(seekbar_deck_play,1)
 
-        cardViewModel = CardViewModel(application,deckId)
+        cardViewModel = ViewModelProvider(this,
+            object:ViewModelProvider.Factory{
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return CardViewModel(application,deckId) as T
+                }
+            })
+            .get(CardViewModel::class.java)
+
         cardViewModel.cardList.observe(this,
             Observer {
                     cards -> deckPlayAdapter.setCards(cards)

@@ -18,5 +18,5 @@ interface DeckDao {
     suspend fun deleteDeckById(deckId: Int)
 
     @Insert
-    suspend fun insertDeck(deck:Deck)
+    suspend fun insertDeck(deck:Deck):Long
 }

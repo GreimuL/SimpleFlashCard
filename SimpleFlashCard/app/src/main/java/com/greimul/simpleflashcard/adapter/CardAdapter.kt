@@ -88,8 +88,8 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int): Recycler
     }
 
     fun flipAnimation(cardView: CardView){
-        cardView.startAnimation(AlphaAnimation(1f,0f).apply{duration=500})
-        cardView.startAnimation(AlphaAnimation(0f,1f).apply{duration=500})
+        //cardView.startAnimation(AlphaAnimation(1f,0f).apply{duration=200})
+        cardView.startAnimation(AlphaAnimation(0f,1f).apply{duration=300})
     }
 
     fun flipCard(position: Int){

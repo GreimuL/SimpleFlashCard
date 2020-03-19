@@ -3,9 +3,6 @@ package com.greimul.simpleflashcard.activity
 import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.cardview.widget.CardView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -19,8 +16,6 @@ import com.greimul.simpleflashcard.viewmodel.CardViewModel
 import com.greimul.simpleflashcard.viewmodel.DeckViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_new_deck.view.*
-import kotlinx.android.synthetic.main.fragment_deck.view.*
-import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var  tablayout:TabLayout
     private lateinit var deckFab: FloatingActionButton
     private lateinit var deckViewModel: DeckViewModel
-
+    private lateinit var cardViewModel: CardViewModel
     val tabLayoutTextArray = arrayOf("Deck","Im/Export","Info")
     val tabLayoutIconArray = arrayOf(
         R.drawable.ic_view_list_48px,
@@ -43,6 +38,14 @@ class MainActivity : AppCompatActivity() {
         deckViewModel = ViewModelProvider(this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application))
             .get(DeckViewModel::class.java)
+
+        cardViewModel = ViewModelProvider(this,
+            object:ViewModelProvider.Factory{
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return CardViewModel(application,-1) as T
+                }
+            })
+            .get(CardViewModel::class.java)
 
         tablayout = tablayout_main
         tablayout.addOnTabSelectedListener(object:TabLayout.OnTabSelectedListener{
@@ -60,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         viewpager2 = viewpager2_main
-        viewpager2.adapter = ViewPagerAdapter(this,deckViewModel)
+        viewpager2.adapter = ViewPagerAdapter(this,deckViewModel,cardViewModel)
         TabLayoutMediator(tablayout,viewpager2){tab,position->
             tab.text = tabLayoutTextArray[position]
             tab.setIcon(tabLayoutIconArray[position])

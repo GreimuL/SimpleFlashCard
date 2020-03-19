@@ -24,7 +24,7 @@
 
         <TextView
             android:id="@+id/textview_play_card_text"
-            style="@style/TextAppearance.MaterialComponents.Body1"
+            style="@style/StandardTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

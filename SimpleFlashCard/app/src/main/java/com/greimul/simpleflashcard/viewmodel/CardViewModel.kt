@@ -9,7 +9,7 @@ import com.greimul.simpleflashcard.db.CardRepo
 import com.greimul.simpleflashcard.db.DeckDatabase
 import kotlinx.coroutines.launch
 
-class CardViewModel(application: Application,deckId:Int):AndroidViewModel(application) {
+class CardViewModel(application: Application, deckId:Int):AndroidViewModel(application) {
 
     private val repo: CardRepo
     val cardList: LiveData<List<Card>>
@@ -19,6 +19,10 @@ class CardViewModel(application: Application,deckId:Int):AndroidViewModel(applic
         cardList = repo.cardList
     }
 
+    fun getCardFromDeck(deckId: Int):LiveData<List<Card>>{
+        return repo.getCardsFromDeck(deckId)
+    }
+    
     fun insert(card:Card) = viewModelScope.launch {
         repo.insert(card)
     }

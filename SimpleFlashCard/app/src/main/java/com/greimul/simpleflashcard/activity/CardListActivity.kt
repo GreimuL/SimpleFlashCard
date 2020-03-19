@@ -2,8 +2,6 @@ package com.greimul.simpleflashcard.activity
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -57,10 +55,14 @@ class CardListActivity:AppCompatActivity() {
         }
 
         fab_card.setOnClickListener {
-            val dialog = AlertDialog.Builder(this,R.style.Theme_MaterialComponents_DayNight_NoActionBar_Bridge)
+            val dialog = AlertDialog.Builder(this,R.style.DialogStyle)
             val dialogView = layoutInflater.inflate(R.layout.dialog_new_card,null)
-            dialogView.toolbar_new_card.apply{
-                setTitle("New Card")
+            dialog.setPositiveButton("OK"){
+                dialog,which->
+                cardViewModel.insert(Card(0,dialogView.edittext_front.text.toString(),dialogView.edittext_back.text.toString(),deckId))
+            }.setNegativeButton("Cancel"){
+                dialog, which ->
+
             }
             dialog.setView(dialogView).show()
                 //recyclerView.scrollToPosition(cardListAdapter.itemCount)

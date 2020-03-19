@@ -2,4 +2,5 @@
 <resources>
     <dimen name="viewpager2_preview">16dp</dimen>
     <dimen name="viewpager2_page_margin">32dp</dimen>
+    <dimen name="dp0">0dp</dimen>
 </resources>
