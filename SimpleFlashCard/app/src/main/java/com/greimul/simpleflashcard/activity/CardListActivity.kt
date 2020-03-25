@@ -1,13 +1,16 @@
 package com.greimul.simpleflashcard.activity
 
+import android.animation.Animator
 import android.app.AlertDialog
 import android.app.Dialog
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.animation.addListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_card_list.*
 import kotlinx.android.synthetic.main.dialog_new_card.*
 import kotlinx.android.synthetic.main.dialog_new_card.view.*
 import kotlinx.android.synthetic.main.dialog_new_card.view.toolbar_new_card
+import kotlin.math.hypot
 
 class CardListActivity:AppCompatActivity() {
 
@@ -33,10 +37,11 @@ class CardListActivity:AppCompatActivity() {
 
     var isAllFlip:Boolean = false
 
+    var isFabClick:Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_list)
-
+        linearlayout_card_list.visibility = View.INVISIBLE
         val deckId = intent.getIntExtra("deckId",0)
 
         cardViewModel = ViewModelProvider(this,
@@ -62,11 +67,50 @@ class CardListActivity:AppCompatActivity() {
             layoutManager = viewManager
         }
 
-        var addCardAnimation = ViewAnimationUtils.createCircularReveal(fab_card,300,300,0f,300f)
+
+
+
 
         fab_card.setOnClickListener {
-            recyclerview_card.visibility = View.GONE
-            fab_card.hide()
+            if(!isFabClick) {
+                var openAddCardAnimation = ViewAnimationUtils.createCircularReveal(linearlayout_card_list,coordinatorlayout_card_list.right,coordinatorlayout_card_list.bottom,0f,
+                    hypot(coordinatorlayout_card_list.width.toDouble(),coordinatorlayout_card_list.height.toDouble()).toFloat())
+                isFabClick = true
+                linearlayout_card_list.visibility = View.VISIBLE
+                openAddCardAnimation.addListener(object:Animator.AnimatorListener{
+                    override fun onAnimationCancel(animation: Animator?) {}
+                    override fun onAnimationEnd(animation: Animator?) {
+                        recyclerview_card.visibility = View.INVISIBLE
+                        fab_card.setImageResource(R.drawable.ic_close_48px)
+                        fab_card.show()
+                    }
+                    override fun onAnimationRepeat(animation: Animator?) {}
+
+                    override fun onAnimationStart(animation: Animator?) {}
+                })
+                fab_card.hide()
+                openAddCardAnimation.start()
+            }
+            else{
+                var closeAddCardAnimation = ViewAnimationUtils.createCircularReveal(linearlayout_card_list,coordinatorlayout_card_list.right,coordinatorlayout_card_list.bottom,
+                    Math.max(linearlayout_card_list.width,linearlayout_card_list.height).toFloat(),
+                    0f)
+                isFabClick = false
+                closeAddCardAnimation.addListener(object:Animator.AnimatorListener{
+                    override fun onAnimationCancel(animation: Animator?) {}
+                    override fun onAnimationEnd(animation: Animator?) {
+                        linearlayout_card_list.visibility = View.INVISIBLE
+                        fab_card.setImageResource(R.drawable.ic_add_48px)
+                        fab_card.show()
+                    }
+                    override fun onAnimationRepeat(animation: Animator?) {}
+                    override fun onAnimationStart(animation: Animator?) {}
+                })
+                fab_card.hide()
+                closeAddCardAnimation.start()
+                recyclerview_card.visibility = View.VISIBLE
+            }
+            /*
             val dialog = AlertDialog.Builder(this,R.style.DialogFullScreen)
             val dialogView = layoutInflater.inflate(R.layout.dialog_new_card,null)
 
@@ -83,6 +127,8 @@ class CardListActivity:AppCompatActivity() {
             }
             dialog.setView(dialogView).show()
                 //recyclerView.scrollToPosition(cardListAdapter.itemCount)
+
+             */
         }
 
         button_flip_card_list.setOnClickListener {
