@@ -26,12 +26,21 @@ class InfoFragment : Fragment() {
         val format = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
         val targetDate = format.parse("2020-10-23 00:00:00")
         var currentDate = Date()
-
+        var milliSecond:Long
+        var textString:String
         GlobalScope.launch(Dispatchers.Main) {
             while(true) {
                 currentDate = Date()
-
-                view.textview_d_day.text = ((targetDate.time - currentDate.time)/(1000*24*60*60)).toString()
+                milliSecond = targetDate.time - currentDate.time
+                if(milliSecond<=0){
+                    view.textview_rml.text = ""
+                    view.textview_d_day.text = ""
+                    break
+                }
+                view.textview_d_day.text = ((milliSecond)/(1000*24*60*60)).toString()+":"+
+                        ((milliSecond)%(1000*24*60*60)/(1000*60*60))+":"+
+                        ((milliSecond)%(1000*24*60*60)%(1000*60*60)/(1000*60))+":"+
+                        ((milliSecond)%(1000*24*60*60)%(1000*60*60)%(1000*60)/(1000))
                 delay(1000L)
             }
         }.start()

@@ -12,7 +12,8 @@
         android:orientation="vertical">
 
         <Button
-            android:textSize="24dp"
+            android:textSize="16sp"
+            android:textAllCaps="false"
             android:id="@+id/button_choose_file_deck"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,6 +89,7 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:textAllCaps="false"
                     android:textSize="24dp"
                     android:id="@+id/button_extract"
                     android:layout_width="wrap_content"
@@ -102,6 +104,7 @@
                     android:layout_weight="1" />
 
                 <Button
+                    android:textAllCaps="false"
                     android:textSize="24dp"
                     android:id="@+id/button_clear"
                     android:layout_width="wrap_content"
@@ -120,7 +123,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Front" />
+                    android:text="Front"
+                    android:gravity="center"/>
 
                 <View
                     android:id="@+id/divider12"
@@ -134,7 +138,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Back" />
+                    android:text="Back"
+                    android:gravity="center"/>
             </LinearLayout>
 
             <View
@@ -164,6 +169,7 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:textAllCaps="false"
                     android:id="@+id/button_import"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

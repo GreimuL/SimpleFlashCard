@@ -40,7 +40,7 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
     <style name="InfoTextStyle">
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 </resources>

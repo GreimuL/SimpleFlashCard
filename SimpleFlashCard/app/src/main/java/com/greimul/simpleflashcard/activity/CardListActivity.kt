@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -61,7 +62,11 @@ class CardListActivity:AppCompatActivity() {
             layoutManager = viewManager
         }
 
+        var addCardAnimation = ViewAnimationUtils.createCircularReveal(fab_card,300,300,0f,300f)
+
         fab_card.setOnClickListener {
+            recyclerview_card.visibility = View.GONE
+            fab_card.hide()
             val dialog = AlertDialog.Builder(this,R.style.DialogFullScreen)
             val dialogView = layoutInflater.inflate(R.layout.dialog_new_card,null)
 
@@ -71,6 +76,10 @@ class CardListActivity:AppCompatActivity() {
                 setNavigationOnClickListener {
 
                 }
+            }
+            dialog.setOnDismissListener {
+                recyclerview_card.visibility = View.VISIBLE
+                fab_card.show()
             }
             dialog.setView(dialogView).show()
                 //recyclerView.scrollToPosition(cardListAdapter.itemCount)

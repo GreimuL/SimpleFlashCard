@@ -168,32 +168,36 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
             view.button_import.text = "File > Import, Deck > Export"
         }
         view.button_import.setOnClickListener {
-            if(chooseType==0) {
-                val dialog = AlertDialog.Builder(context, R.style.DialogStyle)
-                val dialogView = layoutInflater.inflate(R.layout.dialog_new_deck, null)
-                dialog.setView(dialogView).setPositiveButton("OK") { dialog, i ->
-                    val deck = Deck(
-                        0,
-                        dialogView.edittext_new_name.text.toString(),
-                        dialogView.edittext_new_desc.text.toString(), 0
-                    )
-                    var deckId: Long = 0
-                    deckViewModel.insert(deck)
-                    deckViewModel.recentInsertedDeckId.observe(this@ImExportFragment, Observer {
-                        deckId = it
-                        cardList.forEach {
-                            cardViewModel.insert(Card(0, it.front, it.back, deckId.toInt()))
-                        }
-                    })
-                }.setNegativeButton("Cancel") { dialog, i ->
-                }.show()
+            if(isTypeSeleted==true) {
+                if (chooseType == 0) {
+                    val dialog = AlertDialog.Builder(context, R.style.DialogStyle)
+                    val dialogView = layoutInflater.inflate(R.layout.dialog_new_deck, null)
+                    dialog.setView(dialogView).setPositiveButton("OK") { dialog, i ->
+                        val deck = Deck(
+                            0,
+                            dialogView.edittext_new_name.text.toString(),
+                            dialogView.edittext_new_desc.text.toString(), 0
+                        )
+                        var deckId: Long = 0
+                        deckViewModel.insert(deck)
+                        deckViewModel.recentInsertedDeckId.observe(this@ImExportFragment, Observer {
+                            deckId = it
+                            cardList.forEach {
+                                cardViewModel.insert(Card(0, it.front, it.back, deckId.toInt()))
+                            }
+                        })
+                    }.setNegativeButton("Cancel") { dialog, i ->
+                    }.show()
+                } else if (chooseType == 1) {
+                    if (edittext_delimiter.text.isNotEmpty())
+                        delimiterForWrite = edittext_delimiter.text.toString()
+                    else
+                        delimiterForWrite = "\n"
+                    createDeckFile()
+                }
             }
-            else if(chooseType==1){
-                if(edittext_delimiter.text.isNotEmpty())
-                    delimiterForWrite = edittext_delimiter.text.toString()
-                else
-                    delimiterForWrite = "\n"
-                createDeckFile()
+            else{
+                Toast.makeText(context,"Select File or Deck First",Toast.LENGTH_SHORT).show()
             }
         }
 
