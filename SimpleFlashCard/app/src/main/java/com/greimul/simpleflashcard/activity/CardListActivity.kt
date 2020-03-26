@@ -5,11 +5,10 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.drawable.Icon
 import android.os.Bundle
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewAnimationUtils
-import android.view.ViewGroup
+import android.view.*
+import android.view.View.inflate
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.core.animation.addListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -37,10 +36,54 @@ class CardListActivity:AppCompatActivity() {
 
     var isAllFlip:Boolean = false
 
-    var isFabClick:Boolean = false
+    var isAddCardOpen:Boolean = false
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if(!isAddCardOpen)
+            menuInflater.inflate(R.menu.menu_card_list,menu)
+        else
+            menuInflater.inflate(R.menu.menu_card_list_add, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home -> {
+                isAddCardOpen = false
+                setSupportActionBar(toolbar_card_list)
+                var closeAddCardAnimation = ViewAnimationUtils.createCircularReveal(linearlayout_card_list,coordinatorlayout_card_list.right,coordinatorlayout_card_list.bottom,
+                    Math.max(linearlayout_card_list.width,linearlayout_card_list.height).toFloat(),
+                    0f)
+                closeAddCardAnimation.addListener(object:Animator.AnimatorListener{
+                    override fun onAnimationCancel(animation: Animator?) {}
+                    override fun onAnimationEnd(animation: Animator?) {
+                        linearlayout_card_list.visibility = View.INVISIBLE
+                        fab_card.setImageResource(R.drawable.ic_add_48px)
+                        fab_card.show()
+                    }
+                    override fun onAnimationRepeat(animation: Animator?) {}
+                    override fun onAnimationStart(animation: Animator?) {}
+                })
+                fab_card.hide()
+                closeAddCardAnimation.start()
+                recyclerview_card.visibility = View.VISIBLE
+                return true
+            }
+            R.id.menu_card_list_flip -> {
+                cardListAdapter.flipAllCards()
+                return true
+            }
+
+            else-> return super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_list)
+        setSupportActionBar(toolbar_card_list)
+
+
         linearlayout_card_list.visibility = View.INVISIBLE
         val deckId = intent.getIntExtra("deckId",0)
 
@@ -72,44 +115,35 @@ class CardListActivity:AppCompatActivity() {
 
 
         fab_card.setOnClickListener {
-            if(!isFabClick) {
-                var openAddCardAnimation = ViewAnimationUtils.createCircularReveal(linearlayout_card_list,coordinatorlayout_card_list.right,coordinatorlayout_card_list.bottom,0f,
-                    hypot(coordinatorlayout_card_list.width.toDouble(),coordinatorlayout_card_list.height.toDouble()).toFloat())
-                isFabClick = true
-                linearlayout_card_list.visibility = View.VISIBLE
-                openAddCardAnimation.addListener(object:Animator.AnimatorListener{
-                    override fun onAnimationCancel(animation: Animator?) {}
-                    override fun onAnimationEnd(animation: Animator?) {
-                        recyclerview_card.visibility = View.INVISIBLE
-                        fab_card.setImageResource(R.drawable.ic_close_48px)
-                        fab_card.show()
-                    }
-                    override fun onAnimationRepeat(animation: Animator?) {}
+            isAddCardOpen = true
+            setSupportActionBar(toolbar_card_list_add)
+            supportActionBar?.setDisplayShowTitleEnabled(false)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_48px)
+            var openAddCardAnimation = ViewAnimationUtils.createCircularReveal(
+                linearlayout_card_list,
+                coordinatorlayout_card_list.right,
+                coordinatorlayout_card_list.bottom,
+                0f,
+                hypot(
+                    coordinatorlayout_card_list.width.toDouble(),
+                    coordinatorlayout_card_list.height.toDouble()
+                ).toFloat()
+            )
+            linearlayout_card_list.visibility = View.VISIBLE
+            openAddCardAnimation.addListener(object : Animator.AnimatorListener {
+                override fun onAnimationCancel(animation: Animator?) {}
+                override fun onAnimationEnd(animation: Animator?) {
+                    recyclerview_card.visibility = View.INVISIBLE
+                }
 
-                    override fun onAnimationStart(animation: Animator?) {}
-                })
-                fab_card.hide()
-                openAddCardAnimation.start()
-            }
-            else{
-                var closeAddCardAnimation = ViewAnimationUtils.createCircularReveal(linearlayout_card_list,coordinatorlayout_card_list.right,coordinatorlayout_card_list.bottom,
-                    Math.max(linearlayout_card_list.width,linearlayout_card_list.height).toFloat(),
-                    0f)
-                isFabClick = false
-                closeAddCardAnimation.addListener(object:Animator.AnimatorListener{
-                    override fun onAnimationCancel(animation: Animator?) {}
-                    override fun onAnimationEnd(animation: Animator?) {
-                        linearlayout_card_list.visibility = View.INVISIBLE
-                        fab_card.setImageResource(R.drawable.ic_add_48px)
-                        fab_card.show()
-                    }
-                    override fun onAnimationRepeat(animation: Animator?) {}
-                    override fun onAnimationStart(animation: Animator?) {}
-                })
-                fab_card.hide()
-                closeAddCardAnimation.start()
-                recyclerview_card.visibility = View.VISIBLE
-            }
+                override fun onAnimationRepeat(animation: Animator?) {}
+
+                override fun onAnimationStart(animation: Animator?) {}
+            })
+            fab_card.hide()
+            openAddCardAnimation.start()
+
             /*
             val dialog = AlertDialog.Builder(this,R.style.DialogFullScreen)
             val dialogView = layoutInflater.inflate(R.layout.dialog_new_card,null)
@@ -129,15 +163,6 @@ class CardListActivity:AppCompatActivity() {
                 //recyclerView.scrollToPosition(cardListAdapter.itemCount)
 
              */
-        }
-
-        button_flip_card_list.setOnClickListener {
-            isAllFlip = !isAllFlip
-            if(isAllFlip)
-                button_flip_card_list.text = "All: Back"
-            else
-                button_flip_card_list.text = "All: Front"
-            cardListAdapter.flipAllCards()
         }
     }
 }
