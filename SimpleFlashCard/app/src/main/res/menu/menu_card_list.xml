@@ -5,6 +5,7 @@
         android:id="@+id/menu_card_list_flip"
         android:icon="@drawable/ic_flip_48px"
         android:iconTint="@android:color/white"
-        android:title="flip"
-        app:showAsAction="always" />
+        android:title="All Flip"
+        app:showAsAction="always"
+        />
 </menu>

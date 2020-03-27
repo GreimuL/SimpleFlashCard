@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme" />
+            android:theme="?attr/actionBarTheme"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_card"
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme" />
+            android:theme="?attr/actionBarTheme"/>
 
         <TextView
             android:id="@+id/textView20"
@@ -72,7 +72,7 @@
             android:layout_margin="4dp">
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/edittext_card_add_front"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -102,7 +102,7 @@
             android:layout_margin="4dp">
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/edittext_card_add_back"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
