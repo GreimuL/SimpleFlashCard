@@ -25,7 +25,7 @@ class DeckPlayActivity: AppCompatActivity() {
 
         val deckId = intent.getIntExtra("deckId",0)
 
-        deckPlayAdapter = CardAdapter(seekbar_deck_play,1)
+        deckPlayAdapter = CardAdapter(seekbar_deck_play,1) { a, b->}
 
         cardViewModel = ViewModelProvider(this,
             object:ViewModelProvider.Factory{

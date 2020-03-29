@@ -155,7 +155,7 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
                 extractListAdapter.setExtractList(cardListSet)
             }
             else{
-                Toast.makeText(context,"Select File First",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Select File or Deck First",Toast.LENGTH_SHORT).show()
             }
         }
         view.button_clear.setOnClickListener {
@@ -165,7 +165,7 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
             isDeckSelected = false
             isFileSelected = false
             isWriteUriSet = false
-            view.button_import.text = "File > Import, Deck > Export"
+            view.button_import.text = "File > Import\nDeck > Export"
         }
         view.button_import.setOnClickListener {
             if(isTypeSeleted==true) {

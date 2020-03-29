@@ -22,7 +22,17 @@ class CardViewModel(application: Application, deckId:Int):AndroidViewModel(appli
     fun getCardFromDeck(deckId: Int):LiveData<List<Card>>{
         return repo.getCardsFromDeck(deckId)
     }
-    
+
+
+
+    fun selectCard(cardId: Int):LiveData<Card>{
+        return repo.selectCard(cardId)
+    }
+
+    fun updateCard(cardId: Int,front:String,back:String)= viewModelScope.launch{
+        repo.updateCard(cardId,front,back)
+    }
+
     fun insert(card:Card) = viewModelScope.launch {
         repo.insert(card)
     }

@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.drawable.Icon
 import android.os.Bundle
+import android.text.Editable
 import android.view.*
 import android.view.View.inflate
 import androidx.appcompat.app.AppCompatActivity
@@ -41,18 +42,27 @@ class CardListActivity:AppCompatActivity() {
 
     var isAddCardOpen:Boolean = false
 
+    var isEditCard:Boolean = false
+    var selectedEditCardId:Int = -1
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if(!isAddCardOpen)
             menuInflater.inflate(R.menu.menu_card_list,menu)
         else
-            menuInflater.inflate(R.menu.menu_card_list_add, menu)
+            if(isEditCard)
+                menuInflater.inflate(R.menu.menu_card_list_edit, menu)
+            else
+                menuInflater.inflate(R.menu.menu_card_list_add, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> {
-                closeAddCard()
+                if(isAddCardOpen)
+                    closeAddCard()
+                else
+                    super.onBackPressed()
                 return true
             }
             R.id.menu_card_list_flip -> {
@@ -64,16 +74,37 @@ class CardListActivity:AppCompatActivity() {
                 closeAddCard()
                 return true
             }
+            R.id.menu_card_list_delete->{
+                if(selectedEditCardId!=-1)
+                    cardViewModel.delete(selectedEditCardId)
+                closeAddCard()
+                return true
+            }
+            R.id.menu_card_list_save->{
+                if(selectedEditCardId!=-1)
+                    cardViewModel.updateCard(selectedEditCardId,edittext_card_add_front.text.toString(),edittext_card_add_back.text.toString())
+                closeAddCard()
+                return true
+            }
 
             else-> return super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        if(isAddCardOpen)
+            closeAddCard()
+        else
+            super.onBackPressed()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card_list)
         setSupportActionBar(toolbar_card_list)
-
+        supportActionBar?.title = "Card List"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_48px)
 
         linearlayout_card_list.visibility = View.INVISIBLE
         deckId = intent.getIntExtra("deckId",0)
@@ -86,7 +117,7 @@ class CardListActivity:AppCompatActivity() {
                 })
                 .get(CardViewModel::class.java)
 
-        cardListAdapter = CardAdapter(null,0)
+        cardListAdapter = CardAdapter(null,0,::openAddCard)
         viewManager = GridLayoutManager(applicationContext,2)
 
         cardViewModel.cardList.observe(this,
@@ -106,36 +137,7 @@ class CardListActivity:AppCompatActivity() {
 
 
         fab_card.setOnClickListener {
-            isAddCardOpen = true
-            setSupportActionBar(toolbar_card_list_add)
-            supportActionBar?.setDisplayShowTitleEnabled(false)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_48px)
-
-            var openAddCardAnimation = ViewAnimationUtils.createCircularReveal(
-                linearlayout_card_list,
-                coordinatorlayout_card_list.right,
-                coordinatorlayout_card_list.bottom,
-                0f,
-                hypot(
-                    coordinatorlayout_card_list.width.toDouble(),
-                    coordinatorlayout_card_list.height.toDouble()
-                ).toFloat()
-            )
-            linearlayout_card_list.visibility = View.VISIBLE
-            openAddCardAnimation.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationCancel(animation: Animator?) {}
-                override fun onAnimationEnd(animation: Animator?) {
-                    recyclerview_card.visibility = View.INVISIBLE
-                }
-
-                override fun onAnimationRepeat(animation: Animator?) {}
-
-                override fun onAnimationStart(animation: Animator?) {}
-            })
-            fab_card.hide()
-            openAddCardAnimation.start()
-
+            openAddCard(false,0)
             /*
             val dialog = AlertDialog.Builder(this,R.style.DialogFullScreen)
             val dialogView = layoutInflater.inflate(R.layout.dialog_new_card,null)
@@ -158,9 +160,60 @@ class CardListActivity:AppCompatActivity() {
         }
     }
 
+    fun openAddCard(isEdit:Boolean,cardId:Int = 0){
+        isEditCard = isEdit
+        selectedEditCardId = cardId
+        isAddCardOpen = true
+        setSupportActionBar(toolbar_card_list_add)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_48px)
+
+        if(isEdit){
+            cardViewModel.selectCard(cardId).observe(this, object:Observer<Card>{
+                override fun onChanged(t: Card?) {
+                    if(t!=null){
+                        edittext_card_add_front.setText(t.front)
+                        edittext_card_add_back.setText(t.back)
+                    }
+                    cardViewModel.selectCard(cardId).removeObserver(this)
+                }
+            })
+        }
+
+        var openAddCardAnimation = ViewAnimationUtils.createCircularReveal(
+            linearlayout_card_list,
+            coordinatorlayout_card_list.right,
+            coordinatorlayout_card_list.bottom,
+            0f,
+            hypot(
+                coordinatorlayout_card_list.width.toDouble(),
+                coordinatorlayout_card_list.height.toDouble()
+            ).toFloat()
+        )
+        linearlayout_card_list.visibility = View.VISIBLE
+        openAddCardAnimation.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationCancel(animation: Animator?) {}
+            override fun onAnimationEnd(animation: Animator?) {
+                recyclerview_card.visibility = View.INVISIBLE
+            }
+
+            override fun onAnimationRepeat(animation: Animator?) {}
+
+            override fun onAnimationStart(animation: Animator?) {}
+        })
+        fab_card.hide()
+        openAddCardAnimation.start()
+    }
+
     fun closeAddCard(){
+        isEditCard = false
+        selectedEditCardId = -1
         isAddCardOpen = false
         setSupportActionBar(toolbar_card_list)
+        supportActionBar?.title = "Card List"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_48px)
         var closeAddCardAnimation = ViewAnimationUtils.createCircularReveal(linearlayout_card_list,coordinatorlayout_card_list.right,coordinatorlayout_card_list.bottom,
             Math.max(linearlayout_card_list.width,linearlayout_card_list.height).toFloat(),
             0f)

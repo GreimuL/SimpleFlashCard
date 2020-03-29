@@ -11,7 +11,7 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
@@ -48,9 +48,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="Deck Name"
+                android:hint="Deck Name(Max Length:10)"
                 android:inputType="textPersonName"
-                android:textSize="24dp" />
+                android:textSize="24sp"
+                android:maxLength="10"/>
 
             <EditText
                 android:id="@+id/edittext_new_desc"
@@ -58,9 +59,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="Description"
+                android:hint="Description(Max Length:10)"
                 android:inputType="textPersonName"
-                android:textSize="24dp" />
+                android:textSize="24sp"
+                android:maxLength="10"/>
         </LinearLayout>
 
     </LinearLayout>

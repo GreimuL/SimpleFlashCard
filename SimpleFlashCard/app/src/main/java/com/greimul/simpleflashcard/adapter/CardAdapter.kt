@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.item_card.view.*
 import kotlinx.android.synthetic.main.item_card_play.view.*
 import java.util.*
 
-class CardAdapter(private val seekBar: SeekBar?, private val type:Int): RecyclerView.Adapter<CardAdapter.ViewHolder>() {
+class CardAdapter(private val seekBar: SeekBar?, private val type:Int, private val cardOpenFunction:(Boolean,Int)->Unit): RecyclerView.Adapter<CardAdapter.ViewHolder>() {
 
     var originData:List<Card> = listOf()
     var viewData:List<Card> = listOf()
@@ -65,13 +65,20 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int): Recycler
         val curView = viewHolder.cardView
         val curText = viewHolder.textView
         curView.setOnClickListener {
-            flipAnimation(curView)
-            flipSet[viewHolder.adapterPosition] = !flipSet[viewHolder.adapterPosition]
-            if(flipSet[viewHolder.adapterPosition]) {
-                curText.text = viewData[viewHolder.adapterPosition].back
-            }
-            else {
-                curText.text = viewData[viewHolder.adapterPosition].front
+            when(type){
+                0->{
+                    cardOpenFunction(true,viewData[viewHolder.adapterPosition].id.toInt())
+                }
+                1->{
+                    flipAnimation(curView)
+                    flipSet[viewHolder.adapterPosition] = !flipSet[viewHolder.adapterPosition]
+                    if(flipSet[viewHolder.adapterPosition]) {
+                        curText.text = viewData[viewHolder.adapterPosition].back
+                    }
+                    else {
+                        curText.text = viewData[viewHolder.adapterPosition].front
+                    }
+                }
             }
         }
 
@@ -93,8 +100,10 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int): Recycler
     }
 
     fun flipCard(position: Int){
-        flipSet.flip(position)
-        notifyItemChanged(position)
+        if(viewData.size>0) {
+            flipSet.flip(position)
+            notifyItemChanged(position)
+        }
     }
 
     fun flipAllCards(){

@@ -23,6 +23,14 @@ class CardRepo(val cardDao:CardDao,val deckId:Int) {
         return cardDao.getCardsFromDeck(deckId)
     }
 
+    suspend fun updateCard(cardId:Int, front:String, back:String){
+        cardDao.updateCard(cardId,front,back)
+    }
+
+    fun selectCard(cardId:Int):LiveData<Card>{
+        return cardDao.selectCardById(cardId)
+    }
+
     suspend fun delete(cardId:Int){
         cardDao.deleteCardById(cardId)
     }
