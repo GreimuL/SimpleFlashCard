@@ -107,12 +107,14 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int, private v
     }
 
     fun flipAllCards(){
-        isAllFlip = !isAllFlip
-        if(isAllFlip)
-            flipSet.set(0,flipSet.size()-1,true)
-        else
-            flipSet.set(0,flipSet.size()-1,false)
-        notifyDataSetChanged()
+        if(viewData.size>0) {
+            isAllFlip = !isAllFlip
+            if (isAllFlip)
+                flipSet.set(0, flipSet.size() - 1, true)
+            else
+                flipSet.set(0, flipSet.size() - 1, false)
+            notifyDataSetChanged()
+        }
     }
 
     fun shuffleCards(){

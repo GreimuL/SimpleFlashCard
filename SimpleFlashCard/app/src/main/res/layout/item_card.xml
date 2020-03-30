@@ -28,6 +28,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="TextView"
-            android:textSize="24dp"/>
+            android:textSize="24sp"/>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

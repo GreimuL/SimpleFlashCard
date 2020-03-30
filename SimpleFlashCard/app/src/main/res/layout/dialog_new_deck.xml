@@ -48,10 +48,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="Deck Name(Max Length:10)"
+                android:hint="Deck Name"
                 android:inputType="textPersonName"
-                android:textSize="24sp"
-                android:maxLength="10"/>
+                android:textSize="24sp" />
 
             <EditText
                 android:id="@+id/edittext_new_desc"
@@ -59,10 +58,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="Description(Max Length:10)"
+                android:hint="Description"
                 android:inputType="textPersonName"
-                android:textSize="24sp"
-                android:maxLength="10"/>
+                android:textSize="24sp" />
         </LinearLayout>
 
     </LinearLayout>

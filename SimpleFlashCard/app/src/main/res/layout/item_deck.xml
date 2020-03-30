@@ -11,6 +11,6 @@
         android:layout_height="wrap_content"
         android:text="Button"
         android:textAlignment="textStart"
-        android:textSize="36dp"
+        android:textSize="36sp"
         android:textAllCaps="false"/>
 </LinearLayout>

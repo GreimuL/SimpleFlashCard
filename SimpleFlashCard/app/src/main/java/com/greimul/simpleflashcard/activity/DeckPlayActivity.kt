@@ -44,6 +44,7 @@ class DeckPlayActivity: AppCompatActivity() {
         val previewPx = resources.getDimension(R.dimen.viewpager2_preview)
         val pageMarginPx = resources.getDimension(R.dimen.viewpager2_page_margin)
 
+        deckPlayAdapter.setHasStableIds(true) //to solve distorted card when call notifyDataSetChanged
         viewpager2_deck_play.apply{
             adapter = deckPlayAdapter
             clipToPadding = false

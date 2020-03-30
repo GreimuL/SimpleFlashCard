@@ -4,81 +4,92 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
             <TextView
-                style="@style/DialogTextViewStyle"
                 android:id="@+id/textview1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/DialogTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Name" />
 
-            <TextView
-                style="@style/DialogTextViewStyle"
-                android:id="@+id/textview2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Desc"/>
+            <View
+                android:id="@+id/divider15"
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/listDivider" />
 
             <TextView
-                style="@style/DialogTextViewStyle"
-                android:id="@+id/textview3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Size" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="3dp"
-            android:layout_height="match_parent"
-            android:background="?android:attr/listDivider" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/DialogTextViewStyle"
                 android:id="@+id/textview_name"
+                style="@style/DialogTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView"/>
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
             <TextView
+                android:id="@+id/textview2"
                 style="@style/DialogTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Desc" />
+
+            <View
+                android:id="@+id/divider16"
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
                 android:id="@+id/textview_desc"
+                style="@style/DialogTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="TextView" />
 
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
             <TextView
+                android:id="@+id/textview3"
                 style="@style/DialogTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Size" />
+
+            <View
+                android:id="@+id/divider17"
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
                 android:id="@+id/textview_size"
+                style="@style/DialogTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView"/>
-        </LinearLayout>
-
-    </LinearLayout>
+                android:text="TextView" />
+        </TableRow>
+    </TableLayout>
 
     <View
-        android:id="@+id/divider5"
+        android:id="@+id/divider18"
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:background="?android:attr/listDivider" />
@@ -112,5 +123,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Play"/>
+
     </LinearLayout>
 </LinearLayout>

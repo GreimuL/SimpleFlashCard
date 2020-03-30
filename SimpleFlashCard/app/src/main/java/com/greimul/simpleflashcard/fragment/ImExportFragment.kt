@@ -7,6 +7,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -45,6 +47,8 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
     lateinit var extractListAdapter:ExtractListAdapter
     lateinit var testList:List<Card>
 
+    lateinit var fragmentView: View
+
     var deckList:List<Deck> = listOf()
 
     val cardList = mutableListOf<Card>()
@@ -72,6 +76,7 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
             data?.data?.also {
                 deckUri = it
                 isFileSelected = true
+                showFileName(it)
             }
         }
         else if(requestCode==4&&resultCode==Activity.RESULT_OK){
@@ -88,7 +93,7 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_im_export,container,false)
+        fragmentView = inflater.inflate(R.layout.fragment_im_export,container,false)
 
         deckViewModel.deckList.observe(this,
             Observer {
@@ -96,13 +101,13 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
             })
 
         extractListAdapter = ExtractListAdapter()
-        view.recyclerview_import_text.apply{
+        fragmentView.recyclerview_import_text.apply{
             setHasFixedSize(true)
             adapter = extractListAdapter
             layoutManager = LinearLayoutManager(activity)
             addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
         }
-        view.button_choose_file_deck.setOnClickListener {
+        fragmentView.button_choose_file_deck.setOnClickListener {
             if(isTypeSeleted) {
                 if(chooseType==0){
                     openCardListFile()
@@ -120,19 +125,19 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
                                     isTypeSeleted = true
                                     chooseType = 0
                                     openCardListFile()
-                                    view.button_import.text = "IMPORT"
+                                    fragmentView.button_import.text = "IMPORT"
                                 }
                                 1 -> {
                                     isTypeSeleted = true
                                     chooseType = 1
                                     openDeckList()
-                                    view.button_import.text = "EXPORT"
+                                    fragmentView.button_import.text = "EXPORT"
                                 }
                             }
                         }).show()
             }
         }
-        view.button_extract.setOnClickListener {
+        fragmentView.button_extract.setOnClickListener {
             val str:String
             val cardListSet:List<Card>
             val delimiter:Char
@@ -158,16 +163,17 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
                 Toast.makeText(context,"Select File or Deck First",Toast.LENGTH_SHORT).show()
             }
         }
-        view.button_clear.setOnClickListener {
+        fragmentView.button_clear.setOnClickListener {
             cardList.clear()
             extractListAdapter.setExtractList(cardList)
             isTypeSeleted = false
             isDeckSelected = false
             isFileSelected = false
             isWriteUriSet = false
-            view.button_import.text = "File > Import\nDeck > Export"
+            fragmentView.button_choose_file_deck.text = "Choose File or Deck..."
+            fragmentView.button_import.text = "File > Import\nDeck > Export"
         }
-        view.button_import.setOnClickListener {
+        fragmentView.button_import.setOnClickListener {
             if(isTypeSeleted==true) {
                 if (chooseType == 0) {
                     val dialog = AlertDialog.Builder(context, R.style.DialogStyle)
@@ -201,12 +207,12 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
             }
         }
 
-        ArrayAdapter.createFromResource(view.context,R.array.encoding_array,android.R.layout.simple_spinner_item).also {
+        ArrayAdapter.createFromResource(fragmentView.context,R.array.encoding_array,android.R.layout.simple_spinner_item).also {
             it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            view.spinner_encoding.adapter = it
+            fragmentView.spinner_encoding.adapter = it
         }
 
-        view.spinner_encoding.onItemSelectedListener = object:AdapterView.OnItemSelectedListener{
+        fragmentView.spinner_encoding.onItemSelectedListener = object:AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -221,7 +227,17 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        return view
+        return fragmentView
+    }
+
+    fun showFileName(uri:Uri){
+        val cursor = context?.contentResolver?.query(uri,null,null,null)
+        cursor?.use{
+            if(it.moveToFirst()){
+                val fileName = it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                fragmentView.button_choose_file_deck.text = fileName
+            }
+        }
     }
 
     fun openDeckList(){
@@ -232,6 +248,7 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
         val dialogBuilder =
             AlertDialog.Builder(context,R.style.DialogStyle).setItems(deckNameList.toTypedArray(),
                 DialogInterface.OnClickListener{ dialog, which ->
+                    fragmentView.button_choose_file_deck.text = deckList[which].name
                     selectedDeckId = deckList[which].id
                     isDeckSelected = true
                     cardViewModel.getCardFromDeck(selectedDeckId).observe(this, Observer {

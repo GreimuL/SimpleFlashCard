@@ -18,6 +18,7 @@ import com.greimul.simpleflashcard.R
 import com.greimul.simpleflashcard.activity.CardListActivity
 import com.greimul.simpleflashcard.viewmodel.DeckViewModel
 import kotlinx.android.synthetic.main.dialog_deck_click.view.*
+import kotlinx.android.synthetic.main.dialog_deck_delete.view.*
 import kotlinx.android.synthetic.main.item_deck.view.*
 import java.lang.Exception
 
@@ -65,6 +66,7 @@ class DeckListAdapter(val activity:FragmentActivity?,val lifecycleOwner: Lifecyc
 
                 val secondDialogBuilder = AlertDialog.Builder(parent.context,R.style.DialogStyle)
                 val secondDialogView = LayoutInflater.from(parent.context).inflate(R.layout.dialog_deck_delete,parent,false)
+                secondDialogView.textview_dialog_delete.text = "Are you sure you want to delete Deck \"${data.name}\""
                 val secondDialog = secondDialogBuilder.setView(secondDialogView).setPositiveButton("OK"){
                     dialog, i ->
                         viewModel.delete(data.id)

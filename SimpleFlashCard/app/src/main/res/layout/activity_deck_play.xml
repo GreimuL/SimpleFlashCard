@@ -37,7 +37,7 @@
 
             <Button
                 android:id="@+id/button_flip_all"
-                android:textSize = "16dp"
+                android:textSize = "16sp"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -47,7 +47,7 @@
             <Button
                 android:id="@+id/button_shuffle"
                 style="@style/Widget.MaterialComponents.Button"
-                android:textSize = "16dp"
+                android:textSize = "16sp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -55,7 +55,7 @@
 
             <Button
                 android:id="@+id/button_random"
-                android:textSize = "16dp"
+                android:textSize = "16sp"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
