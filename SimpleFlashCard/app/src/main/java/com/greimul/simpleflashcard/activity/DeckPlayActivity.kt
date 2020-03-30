@@ -1,6 +1,7 @@
 package com.greimul.simpleflashcard.activity
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -19,11 +20,28 @@ class DeckPlayActivity: AppCompatActivity() {
     private lateinit var deckPlayAdapter: CardAdapter
 
     var isAllFlip = false
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home->{
+                super.onBackPressed()
+                return true
+            }
+            else-> return super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_deck_play)
-
+        setSupportActionBar(toolbar_deck_play)
         val deckId = intent.getIntExtra("deckId",0)
+        val deckName = intent.getStringExtra("deckName")
+
+        supportActionBar?.title = deckName
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back_48px)
+
 
         deckPlayAdapter = CardAdapter(seekbar_deck_play,1) { a, b->}
 

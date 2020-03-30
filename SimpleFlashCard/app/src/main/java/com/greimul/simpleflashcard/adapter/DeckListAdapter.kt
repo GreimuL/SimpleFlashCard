@@ -83,7 +83,7 @@ class DeckListAdapter(val activity:FragmentActivity?,val lifecycleOwner: Lifecyc
             dialogView.button_play.setOnClickListener {
                 val intent = Intent(parent.context,
                     DeckPlayActivity::class.java)
-                parent.context.startActivity(intent.putExtra("deckId",data.id))
+                parent.context.startActivity(intent.putExtra("deckId",data.id).putExtra("deckName",data.name))
             }
             dialog.show()
         }

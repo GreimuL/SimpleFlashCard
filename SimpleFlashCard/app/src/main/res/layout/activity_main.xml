@@ -12,6 +12,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" />
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tablayout_main"
             android:layout_width="match_parent"
@@ -32,6 +40,6 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="48dp"
         android:clickable="true"
-        app:srcCompat="@drawable/ic_create_48px" />
+        app:srcCompat="@drawable/ic_add_48px" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

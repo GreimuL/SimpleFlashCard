@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        setSupportActionBar(toolbar_main)
         deckViewModel = ViewModelProvider(this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application))
             .get(DeckViewModel::class.java)
