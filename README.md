@@ -1,3 +1,5 @@
+MVVM, Room, Coroutine, SAF
+
 # SimpleFlashCard
 Simple Flashcard   
    
