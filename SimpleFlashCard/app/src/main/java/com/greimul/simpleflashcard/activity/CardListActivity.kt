@@ -221,16 +221,15 @@ class CardListActivity:AppCompatActivity() {
             override fun onAnimationCancel(animation: Animator?) {}
             override fun onAnimationEnd(animation: Animator?) {
                 linearlayout_card_list.visibility = View.INVISIBLE
-                fab_card.setImageResource(R.drawable.ic_add_48px)
+                edittext_card_add_back.text.clear()
+                edittext_card_add_front.text.clear()
+                fab_card.setImageResource(R.drawable.ic_create_48px)
                 fab_card.show()
             }
             override fun onAnimationRepeat(animation: Animator?) {}
             override fun onAnimationStart(animation: Animator?) {}
         })
-        fab_card.hide()
         closeAddCardAnimation.start()
-        edittext_card_add_back.text.clear()
-        edittext_card_add_front.text.clear()
         recyclerview_card.visibility = View.VISIBLE
     }
 }

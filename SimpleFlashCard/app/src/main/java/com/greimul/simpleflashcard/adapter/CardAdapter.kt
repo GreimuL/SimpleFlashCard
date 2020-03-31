@@ -52,11 +52,12 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int, private v
     override fun getItemCount(): Int = viewData.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        flipAnimation(holder.cardView)
         if(type==0)
             holder.itemView.startAnimation(AlphaAnimation(0f,1f).apply{
                 duration=300
             })
+        else
+            flipAnimation(holder.cardView)
         if(flipSet[position])
             holder.textView.text = viewData[holder.adapterPosition].back
         else
