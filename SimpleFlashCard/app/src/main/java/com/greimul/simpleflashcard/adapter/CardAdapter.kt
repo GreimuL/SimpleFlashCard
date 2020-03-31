@@ -40,6 +40,14 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int, private v
             }
         }
     }
+/*
+    override fun getItemId(position: Int): Long {
+        if(viewData.isNotEmpty())
+            return viewData[position].id
+        return super.getItemId(position)
+    }
+
+ */
 
     override fun getItemCount(): Int = viewData.size
 
@@ -100,24 +108,25 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int, private v
     }
 
     fun flipCard(position: Int){
-        if(viewData.size>0) {
+        if(viewData.isNotEmpty()) {
             flipSet.flip(position)
             notifyItemChanged(position)
         }
     }
 
     fun flipAllCards(){
-        if(viewData.size>0) {
+        if(viewData.isNotEmpty()) {
             isAllFlip = !isAllFlip
             if (isAllFlip)
                 flipSet.set(0, flipSet.size() - 1, true)
             else
                 flipSet.set(0, flipSet.size() - 1, false)
-            notifyDataSetChanged()
+            notifyItemRangeChanged(0,viewData.size-1)
         }
     }
 
     fun shuffleCards(){
+
         val dataArray = mutableListOf<Card>()
         viewData.forEach{
             dataArray.add(it)
@@ -125,10 +134,15 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int, private v
         var piv = 1
         for(i in 0 until viewData.size-1){
             var rand = (piv until viewData.size).random()
-            dataArray[i] = dataArray[rand].also { dataArray[rand] = dataArray[i] }
+            dataArray[i] = dataArray[rand].also {
+                dataArray[rand] = dataArray[i]
+            }
+            flipSet[i] = flipSet[rand].also{flipSet[rand]=flipSet[i]}
             piv++
         }
         viewData = dataArray.toList()
-        notifyDataSetChanged()
+
+        //Collections.shuffle(viewData)
+        notifyItemRangeChanged(0,viewData.size-1)
     }
 }

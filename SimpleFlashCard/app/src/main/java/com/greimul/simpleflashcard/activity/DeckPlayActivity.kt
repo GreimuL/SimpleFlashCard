@@ -12,6 +12,7 @@ import com.greimul.simpleflashcard.R
 import com.greimul.simpleflashcard.adapter.CardAdapter
 import com.greimul.simpleflashcard.viewmodel.CardViewModel
 import kotlinx.android.synthetic.main.activity_deck_play.*
+import kotlinx.android.synthetic.main.fragment_deck.*
 import java.lang.Math.abs
 
 class DeckPlayActivity: AppCompatActivity() {
@@ -62,7 +63,7 @@ class DeckPlayActivity: AppCompatActivity() {
         val previewPx = resources.getDimension(R.dimen.viewpager2_preview)
         val pageMarginPx = resources.getDimension(R.dimen.viewpager2_page_margin)
 
-        deckPlayAdapter.setHasStableIds(true) //to solve distorted card when call notifyDataSetChanged
+        //deckPlayAdapter.setHasStableIds(true) //to solve distorted card when call notifyDataSetChanged
         viewpager2_deck_play.apply{
             adapter = deckPlayAdapter
             clipToPadding = false
