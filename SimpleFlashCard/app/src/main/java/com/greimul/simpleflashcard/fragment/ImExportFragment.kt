@@ -217,9 +217,11 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
                                     delay(10L)
                                 }
                                 dialog.dismiss()
+                                withContext(Dispatchers.Main){
+                                    fragmentView.button_import.isClickable = true
+                                    Toast.makeText(context,"Import Success!",Toast.LENGTH_SHORT).show()
+                                }
                             }
-                            fragmentView.button_import.isClickable = true
-                            Toast.makeText(context,"Import Success!",Toast.LENGTH_SHORT).show()
                         }
                         /*
                         deckViewModel.recentInsertedDeckId.observe(this@ImExportFragment, object:Observer<Long> {

@@ -116,8 +116,12 @@ class DeckPlayActivity: AppCompatActivity() {
             deckPlayAdapter.flipCard(viewpager2_deck_play.currentItem)
         }
         button_random.setOnClickListener {
-            if(deckPlayAdapter.itemCount!=0)
-                viewpager2_deck_play.currentItem = (0 until deckPlayAdapter.itemCount).random()
+            if(deckPlayAdapter.itemCount!=0) {
+                var pos = viewpager2_deck_play.currentItem
+                while(pos==viewpager2_deck_play.currentItem)
+                    pos = (0 until deckPlayAdapter.itemCount).random()
+                viewpager2_deck_play.currentItem = pos
+            }
         }
         button_shuffle.setOnClickListener {
             deckPlayAdapter.shuffleCards()

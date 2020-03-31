@@ -122,7 +122,7 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int, private v
                 flipSet.set(0, flipSet.size() - 1, true)
             else
                 flipSet.set(0, flipSet.size() - 1, false)
-            notifyItemRangeChanged(0,viewData.size-1)
+            notifyItemRangeChanged(0,viewData.size)
         }
     }
 
@@ -144,6 +144,6 @@ class CardAdapter(private val seekBar: SeekBar?, private val type:Int, private v
         viewData = dataArray.toList()
 
         //Collections.shuffle(viewData)
-        notifyItemRangeChanged(0,viewData.size-1)
+        notifyItemRangeChanged(0,viewData.size)
     }
 }
