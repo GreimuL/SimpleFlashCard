@@ -10,12 +10,17 @@ class DeckRepo(val deckDao:DeckDao){
 
     fun countCards(deckId:Int):LiveData<Int> = deckDao.countCards(deckId)
 
-    suspend fun insert(deck:Deck){
-        recentInsertedDeckId.postValue(deckDao.insertDeck(deck))
+    suspend fun insert(deck:Deck):Long{
+        //recentInsertedDeckId.postValue(deckDao.insertDeck(deck))
+        return deckDao.insertDeck(deck)
     }
 
     suspend fun delete(id:Int){
         deckDao.deleteDeckById(id)
+    }
+
+    suspend fun deleteAllDeck(){
+        deckDao.deleteAllDeck()
     }
 
 }

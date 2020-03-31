@@ -1,6 +1,7 @@
 package com.greimul.simpleflashcard.activity
 
 import android.animation.Animator
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.drawable.Icon
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.view.*
 import android.view.View.inflate
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.core.animation.addListener
@@ -207,6 +209,8 @@ class CardListActivity:AppCompatActivity() {
     }
 
     fun closeAddCard(){
+        val IMS:InputMethodManager = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        IMS.hideSoftInputFromWindow(this.currentFocus?.windowToken,0)
         isEditCard = false
         selectedEditCardId = -1
         isAddCardOpen = false

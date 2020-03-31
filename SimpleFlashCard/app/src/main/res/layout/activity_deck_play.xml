@@ -16,13 +16,11 @@
         android:id="@+id/viewpager2_deck_play"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        />
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.5"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <View
@@ -46,30 +44,30 @@
 
             <Button
                 android:id="@+id/button_flip_all"
-                android:textSize = "16sp"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="All: Front" />
+                android:text="All:\nFront"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/button_shuffle"
                 style="@style/Widget.MaterialComponents.Button"
-                android:textSize = "16sp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Shuffle" />
+                android:text="Shuffle"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/button_random"
-                android:textSize = "16sp"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Random" />
+                android:text="Random"
+                android:textSize="16sp" />
         </LinearLayout>
 
     </LinearLayout>
@@ -77,7 +75,7 @@
     <View
         android:id="@+id/divider6"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="3dp"
         android:background="?android:attr/listDivider" />
 
     <LinearLayout
@@ -92,8 +90,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_keyboard_arrow_left_48px"
-            android:foreground="?attr/selectableItemBackground"/>
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/ic_keyboard_arrow_left_48px" />
 
         <View
             android:id="@+id/divider7"
@@ -107,9 +105,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
-            android:src="@drawable/ic_flip_48px"
-            android:foreground="?attr/selectableItemBackground"/>
+            android:src="@drawable/ic_flip_48px" />
 
         <View
             android:id="@+id/divider8"
@@ -123,8 +121,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_keyboard_arrow_right_48px"
-            android:foreground="?attr/selectableItemBackground"/>
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/ic_keyboard_arrow_right_48px" />
     </LinearLayout>
 
 </LinearLayout>

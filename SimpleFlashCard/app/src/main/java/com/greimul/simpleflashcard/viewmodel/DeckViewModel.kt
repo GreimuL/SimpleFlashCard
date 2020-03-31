@@ -13,19 +13,22 @@ class DeckViewModel(application:Application):AndroidViewModel(application) {
 
     private val repo:DeckRepo
     val deckList:LiveData<List<Deck>>
-    var recentInsertedDeckId:LiveData<Long>
+    var recentInsertedDeckId:Long = 0
     init{
         repo = DeckRepo(DeckDatabase.getDatabase(application).deckDao())
         deckList = repo.deckList
-        recentInsertedDeckId = repo.recentInsertedDeckId
+        //recentInsertedDeckId = repo.recentInsertedDeckId
     }
 
     fun insert(deck:Deck) = viewModelScope.launch {
-        repo.insert(deck)
+        recentInsertedDeckId = repo.insert(deck)
     }
 
     fun delete(deckId:Int) = viewModelScope.launch{
         repo.delete(deckId)
+    }
+    fun deleteAllDeck()=viewModelScope.launch {
+        repo.deleteAllDeck()
     }
 
     fun countCards(deckId: Int):LiveData<Int> = repo.countCards(deckId)

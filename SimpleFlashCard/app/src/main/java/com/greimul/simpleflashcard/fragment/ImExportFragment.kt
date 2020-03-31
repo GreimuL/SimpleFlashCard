@@ -8,6 +8,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -30,11 +31,10 @@ import com.greimul.simpleflashcard.db.DeckDatabase
 import com.greimul.simpleflashcard.viewmodel.CardViewModel
 import com.greimul.simpleflashcard.viewmodel.DeckViewModel
 import kotlinx.android.synthetic.main.dialog_new_deck.view.*
+import kotlinx.android.synthetic.main.dialog_progress.view.*
 import kotlinx.android.synthetic.main.fragment_im_export.*
 import kotlinx.android.synthetic.main.fragment_im_export.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.FileOutputStream
 import java.io.InputStreamReader
@@ -126,12 +126,14 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
                                     chooseType = 0
                                     openCardListFile()
                                     fragmentView.button_import.text = "IMPORT"
+                                    button_choose_file_deck.text = "File Select Mode"
                                 }
                                 1 -> {
                                     isTypeSeleted = true
                                     chooseType = 1
                                     openDeckList()
                                     fragmentView.button_import.text = "EXPORT"
+                                    button_choose_file_deck.text = "Deck Select Mode"
                                 }
                             }
                         }).show()
@@ -164,14 +166,7 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
             }
         }
         fragmentView.button_clear.setOnClickListener {
-            cardList.clear()
-            extractListAdapter.setExtractList(cardList)
-            isTypeSeleted = false
-            isDeckSelected = false
-            isFileSelected = false
-            isWriteUriSet = false
-            fragmentView.button_choose_file_deck.text = "Choose File or Deck..."
-            fragmentView.button_import.text = "File > Import\nDeck > Export"
+            clearAll()
         }
         fragmentView.button_import.setOnClickListener {
             if(isTypeSeleted==true) {
@@ -185,13 +180,93 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
                             dialogView.edittext_new_desc.text.toString(), 0
                         )
                         var deckId: Long = 0
-                        deckViewModel.insert(deck)
-                        deckViewModel.recentInsertedDeckId.observe(this@ImExportFragment, Observer {
-                            deckId = it
+                        val job = Job()
+                        var finish = true
+                        var curProgress = 0
+                        deckViewModel.insert(deck).invokeOnCompletion {
+                            deckId = deckViewModel.recentInsertedDeckId
                             cardList.forEach {
                                 cardViewModel.insert(Card(0, it.front, it.back, deckId.toInt()))
                             }
-                        })
+                            deckViewModel.countCards(deckId.toInt()).observe(this@ImExportFragment,
+                                object:Observer<Int> {
+                                    override fun onChanged(t: Int?) {
+                                        if(t!=null){
+                                            if(t==cardList.size){
+                                                finish = false
+                                                deckViewModel.countCards(deckId.toInt()).removeObserver(this)
+                                            }
+                                            curProgress=t
+                                        }
+
+                                    }
+                                })
+                            val dialogBuilder = AlertDialog.Builder(context)
+                            val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_progress,container,false)
+                            dialogBuilder.setCancelable(false)
+                            dialogBuilder.setView(dialogView)
+                            val dialog = dialogBuilder.create()
+                            dialog.show()
+                            fragmentView.button_import.isClickable = false
+                            GlobalScope.launch(Dispatchers.IO) {
+                                while (finish) {
+                                    withContext(Dispatchers.Main) {
+                                        dialogView.textview_progress.text =
+                                            "wait... $curProgress / ${cardList.size}"
+                                    }
+                                    delay(10L)
+                                }
+                                dialog.dismiss()
+                            }
+                            fragmentView.button_import.isClickable = true
+                            Toast.makeText(context,"Import Success!",Toast.LENGTH_SHORT).show()
+                        }
+                        /*
+                        deckViewModel.recentInsertedDeckId.observe(this@ImExportFragment, object:Observer<Long> {
+                                override fun onChanged(t: Long?) {
+                                    if(t!=null)
+                                        deckId = t
+                                    cardList.forEach {
+                                        cardViewModel.insert(Card(0, it.front, it.back, deckId.toInt()))
+                                    }
+
+                                    deckViewModel.countCards(deckId.toInt()).observe(this@ImExportFragment,
+                                        object:Observer<Int> {
+                                            override fun onChanged(t: Int?) {
+                                                if(t!=null){
+                                                    if(t==cardList.size){
+                                                        finish = false
+                                                        deckViewModel.countCards(deckId.toInt()).removeObserver(this)
+                                                    }
+                                                    curProgress=t
+                                                }
+
+                                            }
+                                        })
+                                    deckViewModel.recentInsertedDeckId.removeObserver(this)
+                                }
+                            })
+                            GlobalScope.launch(Dispatchers.IO) {
+                                withContext(Dispatchers.Main) {
+                                    button_import.text = "wait"
+                                    button_import.isClickable = false
+                                }
+                                while(finish) {
+                                    withContext(Dispatchers.Main) {
+                                        button_import.text =
+                                            "wait $curProgress / ${cardList.size}"
+                                    }
+                                    delay(10L)
+                                }
+                                withContext(Dispatchers.Main) {
+                                    clearAll()
+                                    button_import.text = "success"
+                                    button_import.isClickable = true
+                                }
+
+                        }
+
+                         */
                     }.setNegativeButton("Cancel") { dialog, i ->
                     }.show()
                 } else if (chooseType == 1) {
@@ -230,6 +305,17 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
         return fragmentView
     }
 
+    fun clearAll(){
+        cardList.clear()
+        extractListAdapter.setExtractList(cardList)
+        isTypeSeleted = false
+        isDeckSelected = false
+        isFileSelected = false
+        isWriteUriSet = false
+        fragmentView.button_choose_file_deck.text = "Choose File or Deck..."
+        fragmentView.button_import.text = "File > Import\nDeck > Export"
+    }
+
     fun showFileName(uri:Uri){
         val cursor = context?.contentResolver?.query(uri,null,null,null)
         cursor?.use{
@@ -245,29 +331,46 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
         deckList.forEach {
             deckNameList.add(it.name)
         }
+        if(deckNameList.isEmpty()){
+            Toast.makeText(context,"Deck List is Empty!",Toast.LENGTH_SHORT).show()
+            return
+        }
         val dialogBuilder =
-            AlertDialog.Builder(context,R.style.DialogStyle).setItems(deckNameList.toTypedArray(),
-                DialogInterface.OnClickListener{ dialog, which ->
-                    fragmentView.button_choose_file_deck.text = deckList[which].name
-                    selectedDeckId = deckList[which].id
-                    isDeckSelected = true
-                    cardViewModel.getCardFromDeck(selectedDeckId).observe(this, Observer {
-                        cardListFromDeck = it
-                    })
-                }).show()
+            AlertDialog.Builder(context,R.style.DialogStyle).setItems(deckNameList.toTypedArray()
+            ) { dialog, which ->
+                fragmentView.button_choose_file_deck.text = deckList[which].name
+                selectedDeckId = deckList[which].id
+                isDeckSelected = true
+                cardViewModel.getCardFromDeck(selectedDeckId).observe(this, Observer {
+                    cardListFromDeck = it
+                })
+            }.show()
     }
 
     fun writeFile(){
         context?.contentResolver?.openFileDescriptor(writeUri,"w")?.use{
             FileOutputStream(it.fileDescriptor).use{file->
                 cardList.forEach {
-                    file.write(it.front.toByteArray(StandardCharsets.UTF_8))
-                    file.write(delimiterForWrite.toByteArray(StandardCharsets.UTF_8))
-                    file.write(it.back.toByteArray(StandardCharsets.UTF_8))
-                    file.write(delimiterForWrite.toByteArray(StandardCharsets.UTF_8))
+                    file.write(it.front.toByteArray(Charset.forName(currentSelectedEncoding)))
+                    file.write(delimiterForWrite.toByteArray(Charset.forName(currentSelectedEncoding)))
+                    file.write(it.back.toByteArray(Charset.forName(currentSelectedEncoding)))
+                    file.write(delimiterForWrite.toByteArray(Charset.forName(currentSelectedEncoding)))
                 }
             }
         }
+        Toast.makeText(context,"Export Success!",Toast.LENGTH_SHORT).show()
+        val dialogBuilder = AlertDialog.Builder(context,R.style.DialogStyle)
+        val dialog = dialogBuilder.setView(R.layout.dialog_share).setPositiveButton("OK"){
+            dialog,which->
+            val shareIntent = Intent().apply{
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_STREAM,writeUri)
+                type = "text/plain"
+            }
+            startActivity(Intent.createChooser(shareIntent,"Choose File"))
+        }.setNegativeButton("Cancel"){
+            dialog, which ->
+        }.show()
     }
 
     fun createDeckFile(){
@@ -294,7 +397,6 @@ class ImExportFragment(val deckViewModel:DeckViewModel,val cardViewModel: CardVi
                 while(currentLine!=null){
                     strBuilder.append(currentLine)
                     strBuilder.append('\n')
-                    Log.d("test",currentLine)
                     currentLine = bufferedReader.readLine()
                 }
                 if(strBuilder.isNotEmpty())

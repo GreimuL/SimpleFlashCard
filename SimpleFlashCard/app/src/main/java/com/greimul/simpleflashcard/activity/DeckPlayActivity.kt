@@ -101,9 +101,9 @@ class DeckPlayActivity: AppCompatActivity() {
                 deckPlayAdapter.flipAllCards()
             isAllFlip = !isAllFlip
             if(isAllFlip)
-                button_flip_all.text = "All: Back"
+                button_flip_all.text = "All:\nBack"
             else
-                button_flip_all.text = "All: Front"
+                button_flip_all.text = "All:\nFront"
         }
 
         button_bottom_left.setOnClickListener {

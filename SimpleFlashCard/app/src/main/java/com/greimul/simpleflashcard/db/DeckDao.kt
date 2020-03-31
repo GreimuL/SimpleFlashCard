@@ -17,6 +17,9 @@ interface DeckDao {
     @Query("DELETE FROM deck_db WHERE id = :deckId")
     suspend fun deleteDeckById(deckId: Int)
 
+    @Query("DELETE FROM deck_db")
+    suspend fun deleteAllDeck()
+
     @Insert
     suspend fun insertDeck(deck:Deck):Long
 }

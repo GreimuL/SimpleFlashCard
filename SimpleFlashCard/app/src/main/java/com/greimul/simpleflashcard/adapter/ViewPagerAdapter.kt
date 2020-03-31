@@ -15,7 +15,7 @@ class ViewPagerAdapter(fa: FragmentActivity,val deckViewModel:DeckViewModel,val 
         return when(position){
             0 -> DeckFragment(deckViewModel)
             1 -> ImExportFragment(deckViewModel,cardViewModel)
-            2 -> InfoFragment()
+            2 -> InfoFragment(deckViewModel)
             else -> ErrorFragment()
         }
     }
