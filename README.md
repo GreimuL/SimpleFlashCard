@@ -6,15 +6,15 @@ More Info: https://greimul.tistory.com/41
 # Screenshots  
 ## Create deck and card, Deck play   
  
-<img src="./img/01.gif" width="30%" height="30%">     <img src="./img/02.gif" width="30%" height="30%">   
+<img src="./img/01.gif">     <img src="./img/02.gif">   
    
 ## Import   
-<img src="./img/03.gif" width="30%" height="30%">     <img src="./img/04.gif" width="30%" height="30%">   
+<img src="./img/03.gif">     <img src="./img/04.gif">   
    
 ## Export, Share, Data reset
-<img src="./img/05.gif" width="30%" height="30%">     <img src="./img/06.gif" width="30%" height="30%">    
+<img src="./img/05.gif">     <img src="./img/06.gif">    
    
 ## Info
-<img src="./img/07.gif" width="50%" height="50%">    
+<img src="./img/07.gif">
 
 
