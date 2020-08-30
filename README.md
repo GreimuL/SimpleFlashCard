@@ -6,7 +6,7 @@ More Info: https://greimul.tistory.com/41
 # Screenshots  
 ## Create deck and card, Deck play   
  
-<img src="./img/01.gif" width="30%" height="30%">     <img src="./img/02.gif" width="30%" height="30%">   
+<img src="https://blog.kakaocdn.net/dn/dzHIBD/btqE0CMQz3A/p3cKREMNmoolcCbnUpYuWk/img.gif" width="30%" height="30%">     <img src="./img/02.gif" width="30%" height="30%">   
    
 ## Import   
 <img src="./img/03.gif" width="30%" height="30%">     <img src="./img/04.gif" width="30%" height="30%">   
